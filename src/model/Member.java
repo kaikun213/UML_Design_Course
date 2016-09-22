@@ -1,13 +1,24 @@
 package model;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
 
-@XmlRootElement
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Member {
 	
 	private String id;
 	private String name;
 	private String personal_number;
+	@XmlElement(name="boat")
+	private ArrayList<Boat> boats;
+	
+	public Member(){
+		boats = new ArrayList<Boat>();
+	}
 	
 	public String getId() {
 		return id;
@@ -26,6 +37,12 @@ public class Member {
 	}
 	public void setPersonal_number(String personal_number) {
 		this.personal_number = personal_number;
+	}
+	public ArrayList<Boat> getBoats() {
+		return boats;
+	}
+	public void setBoats(ArrayList<Boat> boats) {
+		this.boats = boats;
 	}
 	
 
