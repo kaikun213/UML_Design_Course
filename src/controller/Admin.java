@@ -54,7 +54,7 @@ public class Admin {
 		i = a_view.selectListType();
 		if (i == 1) md_list.getCompactList();
 		else if (i == 2) md_list.getVerboseList();
-		a_view.ListMembers(md_list);
+		a_view.ListMembers(md_list.getIterator());
 	}
 
 }

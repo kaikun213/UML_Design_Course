@@ -1,6 +1,8 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+
 import javax.xml.bind.annotation.*;
 
 @XmlRootElement
@@ -40,6 +42,10 @@ public class MemberList {
 			}
 		}
 		return null;							// no error handling (in view)
+	}
+	
+	public Iterator<Member> getIterator(){
+		return memberList.iterator();
 	}
 	
 	

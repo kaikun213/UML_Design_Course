@@ -1,10 +1,9 @@
 package view;
 
-import java.util.ArrayList;
+import java.util.Iterator;
 
 import model.Boat;
 import model.Member;
-import model.MemberList;
 
 public class Console implements IView {
 
@@ -27,7 +26,7 @@ public class Console implements IView {
 	}
 
 	@Override
-	public void ListMembers(MemberList md_list) {
+	public void ListMembers(Iterator<Member> md_list) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -63,7 +62,7 @@ public class Console implements IView {
 	}
 
 	@Override
-	public void showBoats(ArrayList<Boat> boats) {
+	public void showBoats(Iterator<Boat> boats) {
 		// TODO Auto-generated method stub
 		
 	}
