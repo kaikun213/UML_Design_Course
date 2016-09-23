@@ -9,15 +9,19 @@ import model.MemberList;
 public interface IView {
 	
 	void showWelcomeMessage();
-	int showInstructions();					// 1)compact, 2)verbose list or 3) create new Member
+	int showInstructions();					// 1)create, 2)delete or 3) edit
+	int selectListType();
 	void ListMembers(MemberList md_list);
-	Member CreateMemberForm();
+	String selectMember();
 	void showSelectedMember(Member md);
+	
 	void showDeleteConfirmation(Member md);
-	void showBoats(ArrayList<Boat> boats);
-	Boat addBoatToMember();
+	Member CreateMemberForm();
 	Member EditMemberForm(Member md);
 	
+	void showBoats(ArrayList<Boat> boats);
+	Boat addBoatToMember();
 	
+	boolean wantsToManage();
 
 }

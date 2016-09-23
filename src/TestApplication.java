@@ -9,6 +9,7 @@ public class TestApplication {
 		md.setName("Tester");
 		md.setPersonal_number("12312");
 		
+		
 		Member md2 = new Member();
 		md2.setId("2");
 		md2.setName("Peter");
