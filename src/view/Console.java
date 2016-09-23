@@ -45,9 +45,9 @@ public class Console implements IView {
 	}
 
 	@Override
-	public void showDeleteConfirmation(Member md) {
+	public boolean showDeleteConfirmation(Member md) {
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
 
 	@Override
