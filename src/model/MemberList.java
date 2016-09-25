@@ -24,11 +24,12 @@ public class MemberList {
 	}
 	
 	public void addMember(Member md){
+		md.setId(Integer.toString(memberList.size()));	// unique ID = incremental counter
 		memberList.add(md);
 	}
 	
 	public void deleteMember(Member md){
-		memberList.remove(md);
+		if (!memberList.remove(md)) System.err.println("Member not found!");; 
 	}
 	
 	public void editMember(Member md){			// cant change unique ID
@@ -46,15 +47,6 @@ public class MemberList {
 	
 	public Iterator<Member> getIterator(){
 		return memberList.iterator();
-	}
-	
-	
-	/* not implemented yet */
-	public ArrayList<Member> getCompactList(){	// “Compact List”; name, member id and number of boats
-		return memberList;
-	}
-	public ArrayList<Member> getVerboseList(){ // “Verbose List”; name, personal number, member id and boats with boat information
-		return memberList;
 	}
 	
 	

@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -38,11 +39,15 @@ public class Member {
 	public void setPersonal_number(String personal_number) {
 		this.personal_number = personal_number;
 	}
-	public ArrayList<Boat> getBoats() {
-		return boats;
+	public void addBoat(Boat b){
+		boats.add(b);
 	}
-	public void setBoats(ArrayList<Boat> boats) {
-		this.boats = boats;
+	public void deleteBoat(Boat b){
+		if (!boats.remove(b)) System.err.println("Boat not found!");; 
+	}
+	
+	public Iterator<Boat> getBoats(){
+		return boats.iterator();
 	}
 	
 

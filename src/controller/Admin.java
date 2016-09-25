@@ -1,5 +1,6 @@
 package controller;
 
+import model.Member;
 import model.MemberList;
 import view.IView;
 
@@ -40,21 +41,23 @@ public class Admin {
 	
 	private void deleteMember(){
 		String selectedMember = a_view.selectMember();
-		a_view.showSelectedMember(md_list.getMember(selectedMember));
-		a_view.showDeleteConfirmation(md_list.getMember(selectedMember));
+		Member md = md_list.getMember(selectedMember);
+		a_view.showSelectedMember(md.getId(),md.getName(),md.getPersonal_number(), md.getBoats());
+		a_view.showDeleteMemberConfirmation(selectedMember);
 	}
 	
 	private void editMember(){
 		String selectedMember = a_view.selectMember();
-		a_view.showSelectedMember(md_list.getMember(selectedMember));
+		Member md = md_list.getMember(selectedMember);
+		a_view.showSelectedMember(md.getId(),md.getName(),md.getPersonal_number(), md.getBoats());
 		md_list.editMember(a_view.EditMemberForm(md_list.getMember(selectedMember)));
 	}
 	
 	private void showList(){
 		i = a_view.selectListType();
-		if (i == 1) md_list.getCompactList();
-		else if (i == 2) md_list.getVerboseList();
-		a_view.ListMembers(md_list.getIterator());
+		if (i == 1) a_view.showCompactList(md_list.getIterator());
+		else if (i == 2) a_view.showVerboseList(md_list.getIterator());
+
 	}
 
 }
