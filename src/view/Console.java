@@ -92,18 +92,6 @@ public class Console implements IView {
 	}
 
 	@Override
-	public boolean showDeleteMemberConfirmation(String id) {
-		System.out.println("Are you sure to delete the member with the member-ID:" + id + "? y/N");
-		char c;
-		do {
-			System.out.println("Please enter a valid choice");
-			c =scan.next().charAt(0) ;
-		} while (Character.compare(c, 'y')!=0 || Character.compare(c, 'N')!=0 );
-		
-		return (Character.compare(c, 'y') == 0);
-	}
-
-	@Override
 	public Member CreateMemberForm() {
 		Member m = new Member () ; 
 		System.out.println("Please fill in this form to create a new memeber") ; 
@@ -132,6 +120,18 @@ public class Console implements IView {
 		md.setPersonal_number(PersonalNum);
 		
 		return md;
+	}
+	
+	@Override
+	public boolean showDeleteMemberConfirmation(String id) {
+		System.out.println("Are you sure to delete the member with the member-ID:" + id + "? y/N");
+		char c;
+		do {
+			System.out.println("Please enter a valid choice");
+			c =scan.next().charAt(0) ;
+		} while (Character.compare(c, 'y')!=0 || Character.compare(c, 'N')!=0 );
+		
+		return (Character.compare(c, 'y') == 0);
 	}
 
 	@Override
