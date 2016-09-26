@@ -42,11 +42,20 @@ public class MemberList {
 				return m;
 			}
 		}
-		return null;							// no error handling (in view)
+		return null;							// existMember before
 	}
 	
 	public Iterator<Member> getIterator(){
 		return memberList.iterator();
+	}
+	
+	public boolean existMember(String id){
+		for (Member m : memberList) {
+			if (m.getId().equals(id)){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	

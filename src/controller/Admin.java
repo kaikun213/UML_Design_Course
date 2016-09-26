@@ -12,14 +12,14 @@ public class Admin {
 	
 	public Admin(IView v){
 		a_view = v;
-		md_list = new MemberList();
+		md_list = dao.MembersDAO.jaxbXMLToObject();		//  read out of XML
 	}
 	
 	public void manage(){
 		
 		a_view.showWelcomeMessage();
 		
-		while (a_view.wantsToManage()){
+		do {
 			
 			i = a_view.showInstructions();
 			
@@ -34,22 +34,24 @@ public class Admin {
 				showList();
 				editMember();
 			}
-		}
+		} while (a_view.wantsToManage());
+									
+		dao.MembersDAO.jaxbObjectToXML(md_list);	// save data in XML
 	}	
 	
 	
 	
 	private void deleteMember(){
-		String selectedMember = a_view.selectMember();
+		String selectedMember = selectMember();
 		Member md = md_list.getMember(selectedMember);
-		a_view.showSelectedMember(md.getId(),md.getName(),md.getPersonal_number(), md.getBoats());
+		a_view.showMember(md.getId(),md.getName(),md.getPersonal_number(), md.getBoats());
 		a_view.showDeleteMemberConfirmation(selectedMember);
 	}
 	
 	private void editMember(){
-		String selectedMember = a_view.selectMember();
+		String selectedMember = selectMember();
 		Member md = md_list.getMember(selectedMember);
-		a_view.showSelectedMember(md.getId(),md.getName(),md.getPersonal_number(), md.getBoats());
+		a_view.showMember(md.getId(),md.getName(),md.getPersonal_number(), md.getBoats());
 		md_list.editMember(a_view.EditMemberForm(md_list.getMember(selectedMember)));
 	}
 	
@@ -58,6 +60,14 @@ public class Admin {
 		if (i == 1) a_view.showCompactList(md_list.getIterator());
 		else if (i == 2) a_view.showVerboseList(md_list.getIterator());
 
+	}
+	
+	private String selectMember(){
+		String a_member;
+		do {
+		a_member = a_view.selectMember();
+		} while (!md_list.existMember(a_member));
+		return a_member;
 	}
 
 }

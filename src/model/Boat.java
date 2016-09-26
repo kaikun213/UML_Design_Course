@@ -15,7 +15,7 @@ public class Boat {
 	}
 	
 	private Boatstype type;
-	private float length;
+	private double length;
 	
 	public Boatstype getType() {
 		return type;
@@ -23,10 +23,10 @@ public class Boat {
 	public void setType(Boatstype type) {
 		this.type = type;
 	}
-	public float getLength() {
+	public double getLength() {
 		return length;
 	}
-	public void setLength(float length) {
+	public void setLength(double length) {
 		this.length = length;
 	}
 
