@@ -9,7 +9,10 @@ import model.Boat.Boatstype;
 
 public class Console implements IView {
 	
+	private Scanner scan;
+	
 	public Console(){
+		scan = new Scanner(System.in);
 	}
 	
 	@Override
@@ -77,7 +80,7 @@ public class Console implements IView {
 	@Override
 	public int selectMember() {
 		System.out.println("Please type the member-id of the member you want to show "); 
-		return getInputChar();
+		return scan.nextInt();
 	}
 
 	@Override
@@ -93,13 +96,15 @@ public class Console implements IView {
 	@Override
 	public Member createMember() {
 		Member new_Member = new Member () ; 
-		System.out.println("Please fill in this form to create a new member") ; 
+		System.out.println("***** Create a new member *****") ; 
 		
 		System.out.println("Please enter the first name and last name"); 
-		new_Member.setName(getInputString());
+		String name = scan.next();
+		name += " " + scan.next();
+		new_Member.setName(name);
 		
 		System.out.println("Please enter the personal number in this form YYMMDD-XXXX");
-		new_Member.setPersonal_number(getInputString());
+		new_Member.setPersonal_number(scan.next());
 		 	
 		return new_Member;
 	}
@@ -117,12 +122,14 @@ public class Console implements IView {
 	
 	public String editMemberName(){
 		System.out.println("Please enter the new first name and last name");
-		return getInputString();
+		String name = scan.next();
+		name += " " + scan.next();
+		return name;
 		
 	}
 	public String editMemberPersonalNumber(){
 		System.out.println("Please enter the new personal number in this form YYMMDD-XXXX");
-		return getInputString();
+		return scan.next();
 	}
 	
 	@Override
@@ -130,7 +137,7 @@ public class Console implements IView {
 		int c;
 		do {
 			System.out.println("Are you sure to delete the member with the member-ID:" + id + "? y/N");
-			c = getInputChar() ;
+			c = scan.next().charAt(0);
 		} while (c!='y' || c!='N');
 		
 		return (c =='y');
@@ -141,7 +148,7 @@ public class Console implements IView {
 		int c;
 		do {
 			System.out.println("Are you sure to delete the boat with the Boat-ID:" + id + "? y/N");
-			c = getInputChar() ;
+			c = scan.next().charAt(0);
 		} while (c!='y' || c!='N');
 		
 		return (c =='y');
@@ -150,7 +157,7 @@ public class Console implements IView {
 	@Override
 	public boolean wantsToManage() {
 		System.out.println("Press any char to contine or 'q' to quit");
-		return (getInputChar() != 'q');
+		return (scan.next().charAt(0) != 'q');
 	}
 	
 	@Override
@@ -167,18 +174,18 @@ public class Console implements IView {
 	@Override
 	public Boat createBoat() {
 		Boat new_Boat = new Boat() ; 
-		System.out.println("Please fill in this form to create a new boat") ; 
+		System.out.println("***** Create a new boat *****") ; 
 		
 		System.out.println("Please select a boatstype:");
 		for (int i=0;i<Boatstype.values().length;i++ ){
 			System.out.println("\t" + i + ".) " + Boatstype.values()[i]);
 		}
 		
-		Boatstype t = Boatstype.values()[getInputChar()];
+		Boatstype t = Boatstype.values()[getChoice(0,Boatstype.values().length-1)];
 		new_Boat.setType(t);
 		
 		System.out.println("Please enter the length"); 
-		new_Boat.setLength(Double.parseDouble(getInputString()));
+		new_Boat.setLength(Double.parseDouble(scan.next()));
 		 	
 		return new_Boat;
 	}
@@ -202,7 +209,7 @@ public class Console implements IView {
 	@Override
 	public int selectBoat() {
 		System.out.println("Please type the boat-ID of the boat you want to select "); 
-		return getInputChar();
+		return scan.nextInt();
 	}
 
 	@Override
@@ -214,12 +221,12 @@ public class Console implements IView {
 			System.out.println("\t" + i + ".) " + Boatstype.values()[i]);
 		}
 		
-		Boatstype t = Boatstype.values()[getInputChar()];
+		Boatstype t = Boatstype.values()[getChoice(0,Boatstype.values().length-1)];
 		b.setType(t);
 		
 		System.out.println("Current length:" + b.getLength());
 		System.out.println("Please enter the new length"); 
-		b.setLength(Double.parseDouble(getInputString()));
+		b.setLength(Double.parseDouble(scan.next()));
 		
 		return b;
 	}
@@ -228,38 +235,10 @@ public class Console implements IView {
 	private int getChoice(int min,int max){
 		int choice;
 		do {
-			choice = getInputInt();
+			choice = scan.nextInt();
 		} while (choice<min || choice>max);
 		return choice;
 	}
 	
-	private int getInputChar() {
-	    try {
-	      int c = System.in.read();
-	      while (c == '\r' || c =='\n') {
-	        c = System.in.read();
-	      }
-	      return c;
-	    } catch (java.io.IOException e) {
-	      System.out.println("" + e);
-	      return 0;
-	    }
-	}
-	
-	private int getInputInt(){
-		Scanner scan = new Scanner(System.in); 
-		int result = scan.nextInt();
-		scan.close();
-		return result;
-	}
-	
-	private String getInputString(){
-		//String result = "";
-		Scanner scan = new Scanner(System.in); 
-		String result = scan.next();
-		scan.close();
-		return result;
-	}
-
 }
 	

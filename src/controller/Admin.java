@@ -40,10 +40,8 @@ public class Admin {
 			}
 			else if (i == 4){		// list members
 				showList();
-				if (a_view.wantsToManage()) {
-					int m_id = selectMember();
-					showMember(m_id);
-				}
+				int m_id = selectMember();
+				showMember(m_id);
 			}
 		} while (a_view.wantsToManage());
 									
