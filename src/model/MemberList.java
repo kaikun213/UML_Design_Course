@@ -24,21 +24,21 @@ public class MemberList {
 	}
 	
 	public void addMember(Member md){
-		md.setId(Integer.toString(memberList.size()));	// unique ID = incremental counter
+		md.setId(memberList.size());	// unique ID = incremental counter
 		memberList.add(md);
 	}
 	
-	public void deleteMember(Member md){
-		if (!memberList.remove(md)) System.err.println("Member not found!");; 
+	public void deleteMember(int member_id){
+		if (!memberList.remove(getMember(member_id))) System.err.println("Member not found!");; 
 	}
 	
-	public void editMember(Member md){			// cant change unique ID
+	public void editMember(Member md){			// replace member with same unique id
 		memberList.set(getIndexOf(md), md);
 	}
 	
-	public Member getMember(String id){
+	public Member getMember(int id){
 		for (Member m : memberList) {
-			if (m.getId().equals(id)){
+			if (m.getId() == id){
 				return m;
 			}
 		}
@@ -49,9 +49,9 @@ public class MemberList {
 		return memberList.iterator();
 	}
 	
-	public boolean existMember(String id){
+	public boolean existMember(int id){
 		for (Member m : memberList) {
-			if (m.getId().equals(id)){
+			if (m.getId() == id){
 				return true;
 			}
 		}
@@ -62,7 +62,7 @@ public class MemberList {
 	/* ***************************** private functions ************************* */
 	private int getIndexOf(Member md){
 		for (int i=0;i<memberList.size();i++) {
-			if (memberList.get(i).getId().equals(md.getId())){
+			if (memberList.get(i).getId() == md.getId()){
 				return i;
 			}
 		}

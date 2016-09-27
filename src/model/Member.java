@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Member {
 	
-	private String id;
+	private int id;
 	private String name;
 	private String personal_number;
 	@XmlElement(name="boat")
@@ -21,10 +21,10 @@ public class Member {
 		boats = new ArrayList<Boat>();
 	}
 	
-	public String getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -40,14 +40,39 @@ public class Member {
 		this.personal_number = personal_number;
 	}
 	public void addBoat(Boat b){
+		String b_id = "" + id + boats.size();
+		b.setId(Integer.parseInt(b_id));
 		boats.add(b);
 	}
-	public void deleteBoat(Boat b){
-		if (!boats.remove(b)) System.err.println("Boat not found!");; 
+	public void editBoat(Boat b){
+		for (int i=0;i<boats.size();i++){
+			boats.set(getIndexOfBoat(b.getId()), b);
+		}
+	}
+	public void deleteBoat(int b_id){
+		for (int i=0;i<boats.size();i++){
+			if (boats.get(i).getId() == b_id) boats.remove(i);
+			else System.err.println("Boat not found!");; 
+		}
 	}
 	
 	public Iterator<Boat> getBoats(){
 		return boats.iterator();
+	}
+	
+	private int getIndexOfBoat(int b_id){
+		for (int i=0;i<boats.size();i++){
+			if (boats.get(i).getId() == b_id) return i;
+		}
+		return -99;
+	}
+	
+	public boolean existBoat(int b_id){
+		return (getIndexOfBoat(b_id) != -99);
+	}
+	
+	public Boat getBoat(int b_id){
+		return boats.get(getIndexOfBoat(b_id));
 	}
 	
 

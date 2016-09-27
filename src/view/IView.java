@@ -6,21 +6,32 @@ import model.Boat;
 import model.Member;
 
 public interface IView {
+	// show, select, edit, delete, create
 	
 	void showWelcomeMessage();
-	int showInstructions();						// 1)create, 2)delete or 3) edit
+	int selectInstruction();						// 1)create, 2)delete or 3) edit member/boats 4) list members
 	int selectListType();						// 1) compact , 2) verbose
 	void showCompactList(Iterator<Member> m_it); // “Compact List”; name, member id and number of boats
 	void showVerboseList(Iterator<Member> m_it); // “Verbose List”; name, personal number, member id and boats with boat information
-	String selectMember();						// returns unique member-ID as String
-	void showMember(String id, String name, String personal_number, Iterator<Boat> boats);
+	int selectMember();							// returns unique member-ID as String
+	void showMember(int id, String name, String personal_number, Iterator<Boat> b_it);
 	
-	boolean showDeleteMemberConfirmation(String id);	// true = deletion , id = unique id of selected member
-	Member CreateMemberForm();					// gets unique ID from system
-	Member EditMemberForm(Member md);			// just name, personal-id, boats
+	Member createMember();						// gets unique ID from system
+	boolean deleteMemberConfirmation(int id);	// true = deletion , id = unique id of selected member
+	int selectMemberEdit();						// 1) edit name, 2) edit personal-number, 3) edit boats or 4) to quit editing
+	String editMemberName();
+	String editMemberPersonalNumber();
+
+	int selectBoatsEdit();						// 1) add boat  2) delete a boat 3) edit a boat 4) quit editing 
+	void showEmptyBoatsListWarning();				// show warning if member has no boats to edit/delete
+	void showBoats(Iterator<Boat> b_it);		// show a list of all boats of the member
+	int selectBoat();							// returns unique boat-id
+	Boat createBoat();
+	Boat editBoat(Boat b);							// edit boats type and length, not ID!
+	boolean deleteBoatConfirmation(int id);	// true = deletion , id = member-id (owner of boat)
+
+
 	
-	boolean showDeleteBoatConfirmation(String id);	// true = deletion , id = member-id (owner of boat) identifier boat?
-	Boat addBoatToMember();
 	
 	boolean wantsToManage();
 

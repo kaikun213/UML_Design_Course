@@ -14,6 +14,7 @@ public class Boat {
 		Other
 	}
 	
+	private int id;
 	private Boatstype type;
 	private double length;
 	
@@ -28,6 +29,12 @@ public class Boat {
 	}
 	public void setLength(double length) {
 		this.length = length;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }

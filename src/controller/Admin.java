@@ -21,18 +21,29 @@ public class Admin {
 		
 		do {
 			
-			i = a_view.showInstructions();
+			i = a_view.selectInstruction();
 			
-			if (i == 1) {			// create
-				md_list.addMember(a_view.CreateMemberForm());
+			if (i == 1) {			// create member
+				md_list.addMember(a_view.createMember());
 			}
-			else if (i == 2) {		// delete
+			else if (i == 2) {		// delete member
 				showList();
-				deleteMember();
+				int m_id = selectMember();
+				showMember(m_id);
+				deleteMember(m_id);
 			}
-			else if (i == 3) {		// edit
+			else if (i == 3) {		// edit member/boats
 				showList();
-				editMember();
+				int m_id = selectMember();
+				showMember(m_id);
+				editMember(m_id);
+			}
+			else if (i == 4){		// list members
+				showList();
+				if (a_view.wantsToManage()) {
+					int m_id = selectMember();
+					showMember(m_id);
+				}
 			}
 		} while (a_view.wantsToManage());
 									
@@ -41,18 +52,19 @@ public class Admin {
 	
 	
 	
-	private void deleteMember(){
-		String selectedMember = selectMember();
-		Member md = md_list.getMember(selectedMember);
-		a_view.showMember(md.getId(),md.getName(),md.getPersonal_number(), md.getBoats());
-		a_view.showDeleteMemberConfirmation(selectedMember);
+	private void deleteMember(int member_id){
+		if (a_view.deleteMemberConfirmation(member_id)) md_list.deleteMember(member_id);
 	}
 	
-	private void editMember(){
-		String selectedMember = selectMember();
-		Member md = md_list.getMember(selectedMember);
-		a_view.showMember(md.getId(),md.getName(),md.getPersonal_number(), md.getBoats());
-		md_list.editMember(a_view.EditMemberForm(md_list.getMember(selectedMember)));
+	private void editMember(int member_id){
+		Member editMember = md_list.getMember(member_id);
+		do{
+			i = a_view.selectMemberEdit();
+			if (i==1) editMember.setName("");
+			else if (i==2) editMember.setPersonal_number("");
+			else if (i==3) editMembersBoats(editMember);
+		} while (i != 4);
+		md_list.editMember(editMember);
 	}
 	
 	private void showList(){
@@ -62,12 +74,48 @@ public class Admin {
 
 	}
 	
-	private String selectMember(){
-		String a_member;
+	private int selectMember(){
+		int a_member;
 		do {
 		a_member = a_view.selectMember();
 		} while (!md_list.existMember(a_member));
 		return a_member;
 	}
-
+	
+	private void showMember(int member_id){
+		Member md = md_list.getMember(member_id);
+		a_view.showMember(md.getId(),md.getName(),md.getPersonal_number(), md.getBoats());
+	}
+	
+	private void editMembersBoats(Member editMember){
+		do{
+			i = a_view.selectBoatsEdit();
+			if (i == 1) editMember.addBoat(a_view.createBoat());						// create boat
+			if (i == 2 ){																// delete boat
+				if (!editMember.getBoats().hasNext()) a_view.showEmptyBoatsListWarning();
+				else {
+					a_view.showBoats(editMember.getBoats());
+					int b_id = selectBoat(editMember);
+					if (a_view.deleteBoatConfirmation(b_id)) editMember.deleteBoat(b_id);
+				}
+			}
+			if (i == 3){																// edit boat
+				if (!editMember.getBoats().hasNext()) a_view.showEmptyBoatsListWarning();
+				else {
+					a_view.showBoats(editMember.getBoats());
+					int b_id = selectBoat(editMember);
+					editMember.editBoat(a_view.editBoat(editMember.getBoat(b_id)));
+				}
+			}
+		} while(i!=4);
+	}
+	
+	private int selectBoat(Member editMember){
+		int a_boat;
+		do {
+			a_boat = a_view.selectBoat();
+		} while (!editMember.existBoat(a_boat));
+		return a_boat;
+	}
+	
 }

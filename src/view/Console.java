@@ -5,13 +5,11 @@ import java.util.Scanner;
 
 import model.Boat;
 import model.Member;
+import model.Boat.Boatstype;
 
 public class Console implements IView {
 	
-	private Scanner scan; 
-	
 	public Console(){
-		scan = new Scanner(System.in); 
 	}
 	
 	@Override
@@ -24,14 +22,15 @@ public class Console implements IView {
 	}
 
 	@Override
-	public int showInstructions() { 
+	public int selectInstruction() { 
 		System.out.println("----------- Instructions -----------");
 		System.out.println("1.) Create a new member");
 		System.out.println("2.) Delete a member");
-		System.out.println("3.) Edit a member\n");
+		System.out.println("3.) Edit a members/boats");
+		System.out.println("4.) Show members\n");
 		System.out.println("Please type a number to choose your action.");
 		
-		return getChoice(1,3);
+		return getChoice(1,4);
 	}
 
 	@Override
@@ -76,80 +75,76 @@ public class Console implements IView {
 	}
 
 	@Override
-	public String selectMember() {
+	public int selectMember() {
 		System.out.println("Please type the member-id of the member you want to show "); 
-		return scan.next();
+		return getInputChar();
 	}
 
 	@Override
-	public void showMember(String id, String name, String personal_number, Iterator<Boat> boats) {
+	public void showMember(int id, String name, String personal_number, Iterator<Boat> b_it) {
 		System.out.println("\tmember-ID: " + id);
 		System.out.println("\tname: " + name);
-		System.out.println("\tpersonal- number: " + personal_number + "");
+		System.out.println("\tpersonal-number: " + personal_number + "");
 		// sub Iteration to count the number of boats.
-		showBoats(boats);
+		showBoats(b_it);
 		
 	}
 
 	@Override
-	public Member CreateMemberForm() {
-		Member m = new Member () ; 
-		System.out.println("Please fill in this form to create a new memeber") ; 
+	public Member createMember() {
+		Member new_Member = new Member () ; 
+		System.out.println("Please fill in this form to create a new member") ; 
 		
-		System.out.println("Please enter the first name and last name");
-		String name=scan.nextLine(); 
-		m.setName(name);
+		System.out.println("Please enter the first name and last name"); 
+		new_Member.setName(getInputString());
 		
 		System.out.println("Please enter the personal number in this form YYMMDD-XXXX");
-		String PersonalNum=scan.nextLine() ; 
-		m.setPersonal_number(PersonalNum);
+		new_Member.setPersonal_number(getInputString());
 		 	
-		return m;
+		return new_Member;
 	}
 
 	@Override
-	public Member EditMemberForm(Member md) {
-		System.out.println("Please fill in this form to edit a new memeber") ; 
-		
+	public int selectMemberEdit() {
+		System.out.println("----------- Edit Member -----------");
+		System.out.println("1.) Edit name");
+		System.out.println("2.) Edit personal number");
+		System.out.println("3.) Edit members boats");
+		System.out.println("4.) Cancel editing\n");
+		System.out.println("Please type a number to choose your action.");
+		return getChoice(1,4);
+	}
+	
+	public String editMemberName(){
 		System.out.println("Please enter the new first name and last name");
-		String name=scan.nextLine(); 
-		md.setName(name);
+		return getInputString();
 		
+	}
+	public String editMemberPersonalNumber(){
 		System.out.println("Please enter the new personal number in this form YYMMDD-XXXX");
-		String PersonalNum=scan.nextLine() ; 
-		md.setPersonal_number(PersonalNum);
-		
-		return md;
+		return getInputString();
 	}
 	
 	@Override
-	public boolean showDeleteMemberConfirmation(String id) {
-		System.out.println("Are you sure to delete the member with the member-ID:" + id + "? y/N");
-		char c;
+	public boolean deleteMemberConfirmation(int id) {
+		int c;
 		do {
-			System.out.println("Please enter a valid choice");
-			c =scan.next().charAt(0) ;
-		} while (Character.compare(c, 'y')!=0 || Character.compare(c, 'N')!=0 );
+			System.out.println("Are you sure to delete the member with the member-ID:" + id + "? y/N");
+			c = getInputChar() ;
+		} while (c!='y' || c!='N');
 		
-		return (Character.compare(c, 'y') == 0);
+		return (c =='y');
 	}
 
 	@Override
-	public boolean showDeleteBoatConfirmation(String id) {
-		char c;
+	public boolean deleteBoatConfirmation(int id) {
+		int c;
 		do {
-			System.out.println("Are you sure to delete the boat from the member-ID:" + id + "? y/N");
-			c =scan.next().charAt(0) ;
-		} while (Character.compare(c, 'y')!=0 || Character.compare(c, 'N')!=0 );
+			System.out.println("Are you sure to delete the boat with the Boat-ID:" + id + "? y/N");
+			c = getInputChar() ;
+		} while (c!='y' || c!='N');
 		
-		return (Character.compare(c, 'y') == 0);
-	}
-
-
-	@Override
-	public Boat addBoatToMember() {
-		// TODO Auto-generated method stub
-		return null;
+		return (c =='y');
 	}
 
 	@Override
@@ -158,10 +153,82 @@ public class Console implements IView {
 		return (getInputChar() != 'q');
 	}
 	
+	@Override
+	public void showBoats(Iterator<Boat> boats) {
+		int boat_counter = 1;
+		System.out.println("\tboats:");
+		while (boats.hasNext()){
+			Boat b = boats.next();
+			System.out.println("\tBoat-ID: "+ b.getId());
+			System.out.println("\t\t" +  boat_counter++ + ".) " + b.getType() + " : " + b.getLength() + "m");
+		}
+	}
+
+	@Override
+	public Boat createBoat() {
+		Boat new_Boat = new Boat() ; 
+		System.out.println("Please fill in this form to create a new boat") ; 
+		
+		System.out.println("Please select a boatstype:");
+		for (int i=0;i<Boatstype.values().length;i++ ){
+			System.out.println("\t" + i + ".) " + Boatstype.values()[i]);
+		}
+		
+		Boatstype t = Boatstype.values()[getInputChar()];
+		new_Boat.setType(t);
+		
+		System.out.println("Please enter the length"); 
+		new_Boat.setLength(Double.parseDouble(getInputString()));
+		 	
+		return new_Boat;
+	}
+	
+	@Override
+	public int selectBoatsEdit() {
+		System.out.println("----------- Edit Boats  -----------");
+		System.out.println("1.) Create a boat");
+		System.out.println("2.) Delete a boat");
+		System.out.println("3.) Edit a boat");
+		System.out.println("4.) Cancel editing\n");
+		System.out.println("Please type a number to choose your action.");
+		return getChoice(1,4);
+	}
+
+	@Override
+	public void showEmptyBoatsListWarning() {
+		System.out.println("----------- WARNING: Unfortunatelly this member has no registered boats to edit/delete!  -----------");		
+	}
+
+	@Override
+	public int selectBoat() {
+		System.out.println("Please type the boat-ID of the boat you want to select "); 
+		return getInputChar();
+	}
+
+	@Override
+	public Boat editBoat(Boat b) {
+		System.out.println("Boats-ID: " + b.getId());
+		System.out.println("Current boatstype:" + b.getType());
+		System.out.println("Please select a new boatstype:");
+		for (int i=0;i<Boatstype.values().length;i++ ){
+			System.out.println("\t" + i + ".) " + Boatstype.values()[i]);
+		}
+		
+		Boatstype t = Boatstype.values()[getInputChar()];
+		b.setType(t);
+		
+		System.out.println("Current length:" + b.getLength());
+		System.out.println("Please enter the new length"); 
+		b.setLength(Double.parseDouble(getInputString()));
+		
+		return b;
+	}
+	
+	
 	private int getChoice(int min,int max){
 		int choice;
 		do {
-			choice = scan.nextInt() ; 
+			choice = getInputInt();
 		} while (choice<min || choice>max);
 		return choice;
 	}
@@ -179,14 +246,19 @@ public class Console implements IView {
 	    }
 	}
 	
-	private void showBoats(Iterator<Boat> boats) {
-		int boat_counter = 1;
-		System.out.println("\tboats:");
-		while (boats.hasNext()){
-			Boat b = boats.next();
-			System.out.println("\t\t" +  boat_counter++ + ".) " + b.getType() + " : " + b.getLength() + "m");
-		}
-		
+	private int getInputInt(){
+		Scanner scan = new Scanner(System.in); 
+		int result = scan.nextInt();
+		scan.close();
+		return result;
+	}
+	
+	private String getInputString(){
+		//String result = "";
+		Scanner scan = new Scanner(System.in); 
+		String result = scan.next();
+		scan.close();
+		return result;
 	}
 
 }
