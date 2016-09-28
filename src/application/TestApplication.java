@@ -1,3 +1,4 @@
+package application;
 import controller.Admin;
 import view.Console;
 import view.IView;

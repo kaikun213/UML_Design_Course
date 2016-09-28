@@ -2,12 +2,17 @@ package view;
 
 import java.util.Iterator;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import model.Boat;
 import model.Member;
 import model.Boat.Boatstype;
 
 public class Console implements IView {
+	
+	// input errors: scan name (e.g. put more than 2 strings) & scanner in general
+	// format personal number + not more than 12month etc..
 	
 	private Scanner scan;
 	
@@ -98,17 +103,16 @@ public class Console implements IView {
 		Member new_Member = new Member () ; 
 		System.out.println("***** Create a new member *****") ; 
 		
-		System.out.println("Please enter the first name and last name"); 
-		String name = scan.next();
-		name += " " + scan.next();
-		new_Member.setName(name);
+		System.out.println("Please enter the first name and last name (only Letters a-Z)"); 
+		
+		new_Member.setName(getInput("^[a-zA-Z ]*$"));
 		
 		System.out.println("Please enter the personal number in this form YYMMDD-XXXX");
-		new_Member.setPersonal_number(scan.next());
+		new_Member.setPersonal_number(getInput("^[\\d]{6}-{1}[\\d]{4}$"));
 		 	
 		return new_Member;
 	}
-
+	
 	@Override
 	public int selectMemberEdit() {
 		System.out.println("----------- Edit Member -----------");
@@ -121,15 +125,13 @@ public class Console implements IView {
 	}
 	
 	public String editMemberName(){
-		System.out.println("Please enter the new first name and last name");
-		String name = scan.next();
-		name += " " + scan.next();
-		return name;
+		System.out.println("Please enter the new first name and last name (only Letters a-Z)");
+		return getInput("^[a-zA-Z ]*$");
 		
 	}
 	public String editMemberPersonalNumber(){
 		System.out.println("Please enter the new personal number in this form YYMMDD-XXXX");
-		return scan.next();
+		return getInput("^[\\d]{6}-{1}[\\d]{4}$");
 	}
 	
 	@Override
@@ -185,7 +187,7 @@ public class Console implements IView {
 		new_Boat.setType(t);
 		
 		System.out.println("Please enter the length"); 
-		new_Boat.setLength(Double.parseDouble(scan.next()));
+		new_Boat.setLength(scan.nextDouble());
 		 	
 		return new_Boat;
 	}
@@ -226,7 +228,7 @@ public class Console implements IView {
 		
 		System.out.println("Current length:" + b.getLength());
 		System.out.println("Please enter the new length"); 
-		b.setLength(Double.parseDouble(scan.next()));
+		b.setLength(scan.nextDouble());
 		
 		return b;
 	}
@@ -239,6 +241,25 @@ public class Console implements IView {
 		} while (choice<min || choice>max);
 		return choice;
 	}
+	
+	private String getInput(String pattern){
+		String result = "";
+		while (result.isEmpty() && scan.hasNext()){
+			result = scan.nextLine();
+			if (!validates(result,pattern)) {
+				System.out.println("Please enter a valid input");
+				result="";
+			}
+		}
+		return result;
+	}
+	
+	private boolean validates(String s, String expression){
+		Pattern p = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+		Matcher m = p.matcher(s);
+		return m.matches();
+	}
+
 	
 }
 	
