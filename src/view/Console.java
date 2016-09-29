@@ -2,8 +2,6 @@ package view;
 
 import java.util.Iterator;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import model.Boat;
 import model.Member;
@@ -105,10 +103,10 @@ public class Console implements IView {
 		
 		System.out.println("Please enter the first name and last name (only Letters a-Z)"); 
 		
-		new_Member.setName(getInput("^[a-zA-Z ]*$"));
+		new_Member.setName(getInput(false)); //"^[a-zA-Z ]*$"));
 		
 		System.out.println("Please enter the personal number in this form YYMMDD-XXXX");
-		new_Member.setPersonal_number(getInput("^[\\d]{6}-{1}[\\d]{4}$"));
+		new_Member.setPersonal_number(getInput(true));	//("^[\\d]{6}-{1}[\\d]{4}$"));
 		 	
 		return new_Member;
 	}
@@ -126,12 +124,12 @@ public class Console implements IView {
 	
 	public String editMemberName(){
 		System.out.println("Please enter the new first name and last name (only Letters a-Z)");
-		return getInput("^[a-zA-Z ]*$");
+		return getInput(false); 	//("^[a-zA-Z ]*$");
 		
 	}
 	public String editMemberPersonalNumber(){
 		System.out.println("Please enter the new personal number in this form YYMMDD-XXXX");
-		return getInput("^[\\d]{6}-{1}[\\d]{4}$");
+		return getInput(true);		// ("^[\\d]{6}-{1}[\\d]{4}$");
 	}
 	
 	@Override
@@ -242,11 +240,11 @@ public class Console implements IView {
 		return choice;
 	}
 	
-	private String getInput(String pattern){
+	private String getInput(boolean validate){		// validation true = personalNumber
 		String result = "";
 		while (result.isEmpty() && scan.hasNext()){
 			result = scan.nextLine();
-			if (!validates(result,pattern)) {
+			if (!isSwedishID(result)) {
 				System.out.println("Please enter a valid input");
 				result="";
 			}
@@ -254,10 +252,69 @@ public class Console implements IView {
 		return result;
 	}
 	
+	/*
 	private boolean validates(String s, String expression){
 		Pattern p = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
 		Matcher m = p.matcher(s);
 		return m.matches();
+	}
+	*/
+	
+	private static boolean isSwedishID(String s) {
+		String n = s.substring(0, 6) + s.substring(7, s.length());			// deleting the dash to have a clear number
+		
+		for (int i=0;i<n.length();i++){										// check the birth date is just out of numbers , temporary numbers are out!
+			if ((Character.isDigit(n.charAt(i)) == false)) return false; 
+		}
+		int year = Integer.parseInt(n.substring(0, 2));						// for later use for February-days per year 
+		
+		int month = Integer.parseInt(n.substring(2,4));
+		System.out.println("The month is: " + month);
+		if ( month > 12 || month < 1) return false;							// check if it is a correct month
+		
+		int day = Integer.parseInt(n.substring(4, 6));
+		System.out.println("The day is: " + day);
+																			// check if the whole date is possible
+		if (month == 2) {													// February extra case
+			if (year%4 == 0) {
+				if (day > 29 || day < 1) return false;						// every 4 years February has 29 days
+			}
+			else if (day > 28 || day < 1) return false;						// else just 28.
+		}
+		else {
+			if (month>7) {														// for the month after July , even month have up to 31 days
+				if  (month%2 == 0) {
+					if (day > 31 || day < 1) return false;
+				}
+				else if  (day > 30 || day < 1) return false;
+			}
+			if (month<8) {														// for the month before August, odd month have up to 31 days , except the February
+				if  (month%2 == 0) {
+					if (day > 30 || day < 1) return false;
+				}
+				else if  (day > 31 || day < 1) return false;
+			}
+		}
+		
+		int checksum = 0;
+		int nextDigit = 0;
+		for (int i=0;i<n.length()-1;i++){												// Checksum calculation
+				nextDigit = Character.getNumericValue(n.charAt(i))*(2- (i%2));			// multiply the numbers by the right factorial (212121-212)
+				if (nextDigit > 9) {													// if it's out of 2 digits , add both of them to one
+					nextDigit = (nextDigit/10) + (nextDigit%10);
+				}
+				checksum += nextDigit;													// add all the 8 numbers to the sum
+		}
+		
+		
+		checksum = checksum%10;														// take the last digit
+		checksum = 10 - checksum;													// subtract it from 10
+		checksum = checksum%10;														// take the last digit again
+		
+		if (Character.getNumericValue(n.charAt(n.length()-1)) != checksum) return false;
+		
+		return true;																//  if all the conditions are untrue and never returned false, it is a correct number
+		
 	}
 
 	
