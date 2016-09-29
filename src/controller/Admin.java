@@ -10,19 +10,18 @@ public class Admin {
 	private MemberList md_list;
 	private int i;					// users choice saved as int
 	
-	public Admin(IView v){
-		a_view = v;
+	public Admin(IView a_view){
+		this.a_view = a_view;
 		md_list = dao.MembersDAO.jaxbXMLToObject();		//  read out of XML
 	}
 	
-	public void manage(){
-		
+	public void showWelcomeMessage(){
 		a_view.showWelcomeMessage();
-		
+	}
+	public void manage(){
+		a_view.showWelcomeMessage();
 		do {
-			
 			i = a_view.selectInstruction();
-			
 			if (i == 1) {			// create member
 				md_list.addMember(a_view.createMember());
 			}
@@ -58,8 +57,8 @@ public class Admin {
 		Member editMember = md_list.getMember(member_id);
 		do{
 			i = a_view.selectMemberEdit();
-			if (i==1) editMember.setName("");
-			else if (i==2) editMember.setPersonal_number("");
+			if (i==1) editMember.setName(a_view.editMemberName());
+			else if (i==2) editMember.setPersonal_number(a_view.editMemberPersonalNumber());
 			else if (i==3) editMembersBoats(editMember);
 		} while (i != 4);
 		md_list.editMember(editMember);

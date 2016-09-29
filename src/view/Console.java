@@ -14,6 +14,14 @@ public class Console implements IView {
 	
 	private Scanner scan;
 	
+	private enum ValidationType {
+			SwedishID,
+			Double,
+			yesNo,
+			Integer,
+			None
+	}
+	
 	public Console(){
 		scan = new Scanner(System.in);
 	}
@@ -103,10 +111,10 @@ public class Console implements IView {
 		
 		System.out.println("Please enter the first name and last name"); 
 		
-		new_Member.setName(getInput(false)); //"^[a-zA-Z ]*$"));
+		new_Member.setName(getInput(ValidationType.None)); //"^[a-zA-Z ]*$"));
 		
 		System.out.println("Please enter the personal number in this form YYMMDD-XXXX");
-		new_Member.setPersonal_number(getInput(true));	//("^[\\d]{6}-{1}[\\d]{4}$"));
+		new_Member.setPersonal_number(getInput(ValidationType.SwedishID));	//("^[\\d]{6}-{1}[\\d]{4}$"));
 		 	
 		return new_Member;
 	}
@@ -124,34 +132,28 @@ public class Console implements IView {
 	
 	public String editMemberName(){
 		System.out.println("Please enter the new first name and last name");
-		return getInput(false); 	//("^[a-zA-Z ]*$");
+		return getInput(ValidationType.None); 	//("^[a-zA-Z ]*$");
 		
 	}
 	public String editMemberPersonalNumber(){
 		System.out.println("Please enter the new personal number in this form YYMMDD-XXXX");
-		return getInput(true);		// ("^[\\d]{6}-{1}[\\d]{4}$");
+		return getInput(ValidationType.SwedishID);		// ("^[\\d]{6}-{1}[\\d]{4}$");
 	}
 	
 	@Override
 	public boolean deleteMemberConfirmation(int id) {
-		int c;
-		do {
-			System.out.println("Are you sure to delete the member with the member-ID:" + id + "? y/N");
-			c = scan.next().charAt(0);
-		} while (c!='y' || c!='N');
-		
-		return (c =='y');
+		System.out.println("Are you sure to delete the member with the member-ID:" + id + "? y/N");
+		char c = getInput(ValidationType.yesNo).charAt(0);
+	
+		return (Character.compare(c, 'y') == 0);
 	}
 
 	@Override
 	public boolean deleteBoatConfirmation(int id) {
-		int c;
-		do {
-			System.out.println("Are you sure to delete the boat with the Boat-ID:" + id + "? y/N");
-			c = scan.next().charAt(0);
-		} while (c!='y' || c!='N');
-		
-		return (c =='y');
+		System.out.println("Are you sure to delete the boat with the Boat-ID:" + id + "? y/N");
+		char c = getInput(ValidationType.yesNo).charAt(0);
+	
+		return (Character.compare(c, 'y') == 0);
 	}
 
 	@Override
@@ -166,8 +168,8 @@ public class Console implements IView {
 		System.out.println("\tboats:");
 		while (boats.hasNext()){
 			Boat b = boats.next();
-			System.out.println("\tBoat-ID: "+ b.getId());
-			System.out.println("\t\t" +  boat_counter++ + ".) " + b.getType() + " : " + b.getLength() + "m");
+			System.out.println("\t\t" + boat_counter++ + ".) " + "Boat-ID: "  + b.getId());
+			System.out.println("\t\t    " + b.getType() + " : " + b.getLength() + "m\n");
 		}
 	}
 
@@ -185,7 +187,7 @@ public class Console implements IView {
 		new_Boat.setType(t);
 		
 		System.out.println("Please enter the length"); 
-		new_Boat.setLength(scan.nextDouble());
+		new_Boat.setLength(Double.parseDouble(getInput(ValidationType.Double)));
 		 	
 		return new_Boat;
 	}
@@ -226,7 +228,7 @@ public class Console implements IView {
 		
 		System.out.println("Current length:" + b.getLength());
 		System.out.println("Please enter the new length"); 
-		b.setLength(scan.nextDouble());
+		b.setLength(Double.parseDouble(getInput(ValidationType.Double)));
 		
 		return b;
 	}
@@ -235,21 +237,56 @@ public class Console implements IView {
 	private int getChoice(int min,int max){
 		int choice;
 		do {
-			choice = scan.nextInt();
+			choice = Integer.parseInt(getInput(ValidationType.Integer));
 		} while (choice<min || choice>max);
 		return choice;
 	}
 	
-	private String getInput(boolean validate){		// validation true = personalNumber
+	private String getInput(ValidationType type){		// validation true = personalNumber
 		String result = "";
-		while (result.isEmpty() && scan.hasNext()){
+		do {
 			result = scan.nextLine();
-			if (validate && !isSwedishID(result)) {
-				System.out.println("Please enter a valid input");
-				result="";
+			if (type!=ValidationType.None) {
+				if ((type==ValidationType.Double && !validateDouble(result)) ||
+				    (type==ValidationType.SwedishID && !validateSwedishID(result)) ||
+					((type==ValidationType.yesNo) && !validateYesNo(result)) ||
+					((type==ValidationType.Integer) && !validateInteger(result))
+				   ) {									// validation not passed -> repeat
+						System.out.println("Please enter a valid input");
+						result="";
+					}
 			}
-		}
+		}while (result.isEmpty() && scan.hasNext());
 		return result;
+	}
+	
+	private boolean validateInteger(String s){
+		try {
+			@SuppressWarnings("unused")
+			int i = Integer.parseInt(s);
+			return true;
+		}
+		catch(NumberFormatException e){
+			return false;
+		}
+	}
+	
+	private boolean validateDouble(String s){
+		try {
+			@SuppressWarnings("unused")
+			Double d = Double.parseDouble(s);
+			return true;
+		}
+		catch(NumberFormatException e){
+			return false;
+		}
+	}
+	
+	private boolean validateYesNo(String s){
+		if (s.length() == 1){
+			if ((Character.compare(s.charAt(0), 'y') == 0) || (Character.compare(s.charAt(0), 'N') == 0)) return true;
+		}
+		return false;
 	}
 	
 	/*
@@ -260,39 +297,39 @@ public class Console implements IView {
 	}
 	*/
 	
-	private static boolean isSwedishID(String s) {
+	private boolean validateSwedishID(String s) {
 		String n = s.substring(0, 6) + s.substring(7, s.length());			// deleting the dash to have a clear number
 		
 		for (int i=0;i<n.length();i++){										// check the birth date is just out of numbers , temporary numbers are out!
-			if ((Character.isDigit(n.charAt(i)) == false)) return false; 
+			if ((Character.isDigit(n.charAt(i)) == false)) 	return showErrorMessage("The personal-nr. consists only digits!");
 		}
 		int year = Integer.parseInt(n.substring(0, 2));						// for later use for February-days per year 
 		
 		int month = Integer.parseInt(n.substring(2,4));
-		System.out.println("The month is: " + month);
-		if ( month > 12 || month < 1) return false;							// check if it is a correct month
+		//System.out.println("The month is: " + month);
+		if ( month > 12 || month < 1) return showErrorMessage("Invalid month!");
 		
 		int day = Integer.parseInt(n.substring(4, 6));
-		System.out.println("The day is: " + day);
+		//System.out.println("The day is: " + day);
 																			// check if the whole date is possible
 		if (month == 2) {													// February extra case
 			if (year%4 == 0) {
-				if (day > 29 || day < 1) return false;						// every 4 years February has 29 days
+				if (day > 29 || day < 1) return showErrorMessage("Invalid day!");						// every 4 years February has 29 days
 			}
-			else if (day > 28 || day < 1) return false;						// else just 28.
+			else if (day > 28 || day < 1) return showErrorMessage("Invalid day!");
 		}
 		else {
 			if (month>7) {														// for the month after July , even month have up to 31 days
 				if  (month%2 == 0) {
-					if (day > 31 || day < 1) return false;
+					if (day > 31 || day < 1) return showErrorMessage("Invalid day!");
 				}
-				else if  (day > 30 || day < 1) return false;
+				else if  (day > 30 || day < 1) return showErrorMessage("Invalid day!");
 			}
 			if (month<8) {														// for the month before August, odd month have up to 31 days , except the February
 				if  (month%2 == 0) {
-					if (day > 30 || day < 1) return false;
+					if (day > 30 || day < 1) return showErrorMessage("Invalid day!");
 				}
-				else if  (day > 31 || day < 1) return false;
+				else if  (day > 31 || day < 1) return showErrorMessage("Invalid day!");
 			}
 		}
 		
@@ -311,10 +348,15 @@ public class Console implements IView {
 		checksum = 10 - checksum;													// subtract it from 10
 		checksum = checksum%10;														// take the last digit again
 		
-		if (Character.getNumericValue(n.charAt(n.length()-1)) != checksum) return false;
+		if (Character.getNumericValue(n.charAt(n.length()-1)) != checksum) return showErrorMessage("Invalid checksum!");
 		
 		return true;																//  if all the conditions are untrue and never returned false, it is a correct number
 		
+	}
+	
+	private boolean showErrorMessage(String s){
+		System.err.println(s);
+		return false;
 	}
 
 	
