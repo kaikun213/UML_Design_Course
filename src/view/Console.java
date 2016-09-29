@@ -101,7 +101,7 @@ public class Console implements IView {
 		Member new_Member = new Member () ; 
 		System.out.println("***** Create a new member *****") ; 
 		
-		System.out.println("Please enter the first name and last name (only Letters a-Z)"); 
+		System.out.println("Please enter the first name and last name"); 
 		
 		new_Member.setName(getInput(false)); //"^[a-zA-Z ]*$"));
 		
@@ -123,7 +123,7 @@ public class Console implements IView {
 	}
 	
 	public String editMemberName(){
-		System.out.println("Please enter the new first name and last name (only Letters a-Z)");
+		System.out.println("Please enter the new first name and last name");
 		return getInput(false); 	//("^[a-zA-Z ]*$");
 		
 	}
@@ -244,7 +244,7 @@ public class Console implements IView {
 		String result = "";
 		while (result.isEmpty() && scan.hasNext()){
 			result = scan.nextLine();
-			if (!isSwedishID(result)) {
+			if (validate && !isSwedishID(result)) {
 				System.out.println("Please enter a valid input");
 				result="";
 			}
