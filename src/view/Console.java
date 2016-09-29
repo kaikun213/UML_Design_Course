@@ -30,7 +30,7 @@ public class Console implements IView {
 	public void showWelcomeMessage() {
 		  System.out.println("__________________________________");
 		  System.out.println("|                                 |");
-		System.out.println("| Hello, Welcome to the Boat Club |")  ; 
+		  System.out.println("| Hello, Welcome to the Boat Club |") ; 
 		  System.out.println("|_________________________________|\n");
 		
 	}
@@ -159,7 +159,7 @@ public class Console implements IView {
 	@Override
 	public boolean wantsToManage() {
 		System.out.println("Press any char to contine or 'q' to quit");
-		return (scan.next().charAt(0) != 'q');
+		return (Character.compare(getInput(ValidationType.None).charAt(0), 'q') != 0);
 	}
 	
 	@Override
@@ -288,14 +288,6 @@ public class Console implements IView {
 		}
 		return false;
 	}
-	
-	/*
-	private boolean validates(String s, String expression){
-		Pattern p = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-		Matcher m = p.matcher(s);
-		return m.matches();
-	}
-	*/
 	
 	private boolean validateSwedishID(String s) {
 		String n = s.substring(0, 6) + s.substring(7, s.length());			// deleting the dash to have a clear number
