@@ -50,10 +50,7 @@ public class Member {
 		}
 	}
 	public void deleteBoat(int b_id){
-		for (int i=0;i<boats.size();i++){
-			if (boats.get(i).getId() == b_id) boats.remove(i);
-			else System.err.println("Boat not found!");; 
-		}
+		if (!boats.remove(getBoat(b_id))) System.err.println("Boat not found!");; 
 	}
 	
 	public Iterator<Boat> getBoats(){

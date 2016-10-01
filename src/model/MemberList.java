@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.bind.annotation.*;
 
@@ -10,17 +11,23 @@ import javax.xml.bind.annotation.*;
 public class MemberList {
 	
 	@XmlElement(name="member")
-	ArrayList<Member> memberList;
+	List<Member> memberList;
 
 	public MemberList(){
 		memberList = new ArrayList<Member>();
 	}
 	
-	public ArrayList<Member> getMemberList() {
+	public List<Member> getMemberList() {
 		return memberList;
 	}
-	public void setMemberList(ArrayList<Member> memberList) {
+	public void setMemberList(List<Member> memberList) {
 		this.memberList = memberList;
+	}
+	
+	public MemberList copy(){
+		MemberList copied_list = new MemberList();
+		copied_list.setMemberList(memberList);
+		return copied_list;
 	}
 	
 	public void addMember(Member md){
