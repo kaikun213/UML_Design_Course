@@ -2,6 +2,8 @@ package controller;
 
 import model.Member;
 import model.MemberList;
+import model.Boat.Boatstype;
+import search.*;
 import view.IView;
 
 public class Admin {
@@ -9,6 +11,14 @@ public class Admin {
 	private IView a_view;
 	private MemberList md_list;
 	private int i;					// users choice saved as int
+	
+	public enum ValidationType {
+		SwedishID,
+		Double,
+		Character,
+		Integer,
+		String
+}
 	
 	public Admin(IView a_view){
 		this.a_view = a_view;
@@ -24,33 +34,49 @@ public class Admin {
 			i = a_view.selectInstruction();
 			if (i == 1) {			// create member
 				md_list.addMember(a_view.createMember());
+				a_view.showSuccessMessage("SUCCESSFUL CREATED A NEW MEMBER");
 			}
 			else if (i == 2) {		// delete member
-				showList();
-				int m_id = selectMember();
-				showMember(m_id);
-				deleteMember(m_id);
+				showList(md_list);
+				if (!md_list.getMemberList().isEmpty()){
+					int m_id = selectMember(md_list);
+					showMember(m_id);
+					deleteMember(m_id);
+				}
 			}
 			else if (i == 3) {		// edit member/boats
-				showList();
-				int m_id = selectMember();
-				showMember(m_id);
-				editMember(m_id);
+				showList(md_list);
+				if (!md_list.getMemberList().isEmpty()){
+					int m_id = selectMember(md_list);
+					showMember(m_id);
+					editMember(m_id);
+				}
 			}
 			else if (i == 4){		// list members
-				showList();
-				int m_id = selectMember();
-				showMember(m_id);
+				showList(md_list);
+				if (!md_list.getMemberList().isEmpty()){
+					int m_id = selectMember(md_list);
+					showMember(m_id);
+				}				
+			}
+			else if (i == 5){		// search members
+				MemberList search_result = searchMembers();
+				showList(search_result);
+				if (!search_result.getMemberList().isEmpty()){
+					int m_id = selectMember(md_list);
+					showMember(m_id);
+				}
 			}
 		} while (a_view.wantsToManage());
 									
 		dao.MembersDAO.jaxbObjectToXML(md_list);	// save data in XML
 	}	
 	
-	
-	
 	private void deleteMember(int member_id){
-		if (a_view.deleteMemberConfirmation(member_id)) md_list.deleteMember(member_id);
+		if (a_view.deleteMemberConfirmation(member_id)) {
+			md_list.deleteMember(member_id);
+			a_view.showSuccessMessage("SUCCESSFUL DELETED MEMBER ");
+		}
 	}
 	
 	private void editMember(int member_id){
@@ -64,18 +90,18 @@ public class Admin {
 		md_list.editMember(editMember);
 	}
 	
-	private void showList(){
+	private void showList(MemberList list){
 		i = a_view.selectListType();
-		if (i == 1) a_view.showCompactList(md_list.getIterator());
-		else if (i == 2) a_view.showVerboseList(md_list.getIterator());
+		if (i == 1) a_view.showCompactList(list.getIterator());
+		else if (i == 2) a_view.showVerboseList(list.getIterator());
 
 	}
 	
-	private int selectMember(){
+	private int selectMember(MemberList list){
 		int a_member;
 		do {
 		a_member = a_view.selectMember();
-		} while (!md_list.existMember(a_member));
+		} while (!list.existMember(a_member));
 		return a_member;
 	}
 	
@@ -87,13 +113,19 @@ public class Admin {
 	private void editMembersBoats(Member editMember){
 		do{
 			i = a_view.selectBoatsEdit();
-			if (i == 1) editMember.addBoat(a_view.createBoat());						// create boat
+			if (i == 1) {																// create boat
+					editMember.addBoat(a_view.createBoat());						
+					a_view.showSuccessMessage("***** SUCCESSFUL CREATED NEW BOAT *****");		 	
+			}
 			if (i == 2 ){																// delete boat
 				if (!editMember.getBoats().hasNext()) a_view.showEmptyBoatsListWarning();
 				else {
 					a_view.showBoats(editMember.getBoats());
 					int b_id = selectBoat(editMember);
-					if (a_view.deleteBoatConfirmation(b_id)) editMember.deleteBoat(b_id);
+					if (a_view.deleteBoatConfirmation(b_id)) {
+						editMember.deleteBoat(b_id);
+						a_view.showSuccessMessage("SUCCESSFUL DELETED BOAT " + b_id);
+					}
 				}
 			}
 			if (i == 3){																// edit boat
@@ -102,6 +134,7 @@ public class Admin {
 					a_view.showBoats(editMember.getBoats());
 					int b_id = selectBoat(editMember);
 					editMember.editBoat(a_view.editBoat(editMember.getBoat(b_id)));
+					a_view.showSuccessMessage("***** SUCCESSFUL EDITED BOAT " + b_id + " *****");		 	
 				}
 			}
 		} while(i!=4);
@@ -114,5 +147,35 @@ public class Admin {
 		} while (!editMember.existBoat(a_boat));
 		return a_boat;
 	}
+	
+	private MemberList searchMembers(){
+		i = a_view.selectSearch();
+		MemberList search_list = new MemberList();
+		
+				switch (i){
+				case 1: {		//by name
+					SearchCriteria byName = new ByNamePrefixCriteria(a_view.getSearchParam(ValidationType.String));
+					search_list.setMemberList(byName.meetCriteria(md_list.getMemberList()));
+				}
+					break;
+				case 2: {		//by age
+					SearchCriteria byAge = new ByMinimumAgeCriteria(Integer.parseInt(a_view.getSearchParam(ValidationType.Integer)));
+					search_list.setMemberList(byAge.meetCriteria(md_list.getMemberList()));
+				}
+					break;
+				case 3:	{		//by birth month
+					SearchCriteria byBirthMonth = new ByBirthMonthCriteria(a_view.selectMonth());
+					search_list.setMemberList(byBirthMonth.meetCriteria(md_list.getMemberList()));
+					break;
+				}
+				case 4: {		//by boatstype
+					SearchCriteria byBoatsType = new ByBoatsTypeCriteria(Boatstype.values()[a_view.selectBoatsType()]);
+					search_list.setMemberList(byBoatsType.meetCriteria(md_list.getMemberList()));
+					break;
+				}
+				}	
+				
+		return search_list;
+	}	
 	
 }
