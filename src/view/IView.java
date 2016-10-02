@@ -36,6 +36,10 @@ public interface IView {
 	int selectMonth();							// selection from constant enum Calendar.Month
 	int selectBoatsType();						// selection from constant enum Boat.BoatType
 	
+	void showAuthentification();
+	String authentificateUsername();
+	String authentificatePassword();
+	
 	void showSuccessMessage(String s);
 	void showErrorMessage(String s);
 	

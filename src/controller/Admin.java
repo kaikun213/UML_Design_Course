@@ -2,19 +2,25 @@ package controller;
 
 import model.Member;
 import model.MemberList;
+import model.Authentification;
 import model.Boat.Boatstype;
-import search.*;
+import model.search.ByBirthMonthCriteria;
+import model.search.ByBoatsTypeCriteria;
+import model.search.ByMinimumAgeCriteria;
+import model.search.ByNamePrefixCriteria;
+import model.search.SearchCriteria;
 import view.IView;
 
 public class Admin {
 	
 	private IView a_view;
 	private MemberList md_list;
+	private Authentification auth = new Authentification();
 	private int i;					// users choice saved as int
 	
 	public enum ValidationType {
 		SwedishID,
-		Double,
+		PositiveDouble,
 		Character,
 		Integer,
 		String
@@ -33,23 +39,29 @@ public class Admin {
 		do {
 			i = a_view.selectInstruction();
 			if (i == 1) {			// create member
-				md_list.addMember(a_view.createMember());
-				a_view.showSuccessMessage("SUCCESSFUL CREATED A NEW MEMBER");
+				if (auth.isLogged() || login()){
+					md_list.addMember(a_view.createMember());
+					a_view.showSuccessMessage("SUCCESSFUL CREATED A NEW MEMBER");
+				}
 			}
 			else if (i == 2) {		// delete member
-				showList(md_list);
-				if (!md_list.getMemberList().isEmpty()){
-					int m_id = selectMember(md_list);
-					showMember(m_id);
-					deleteMember(m_id);
+				if (auth.isLogged() || login()){
+					showList(md_list);
+					if (!md_list.getMemberList().isEmpty()){
+						int m_id = selectMember(md_list);
+						showMember(m_id);
+						deleteMember(m_id);
+					}
 				}
 			}
 			else if (i == 3) {		// edit member/boats
-				showList(md_list);
-				if (!md_list.getMemberList().isEmpty()){
-					int m_id = selectMember(md_list);
-					showMember(m_id);
-					editMember(m_id);
+				if (auth.isLogged() || login()){
+					showList(md_list);
+					if (!md_list.getMemberList().isEmpty()){
+						int m_id = selectMember(md_list);
+						showMember(m_id);
+						editMember(m_id);
+					}
 				}
 			}
 			else if (i == 4){		// list members
@@ -71,6 +83,18 @@ public class Admin {
 									
 		dao.MembersDAO.jaxbObjectToXML(md_list);	// save data in XML
 	}	
+	
+	private boolean login(){
+		a_view.showAuthentification();
+		String username = a_view.authentificateUsername();
+		String password = a_view.authentificatePassword();
+		if (auth.authentificate(username, password)) {
+			auth.setLogged(true);
+			a_view.showSuccessMessage("SUCCESSFUL LOGGED IN");
+		}
+		else a_view.showErrorMessage("Wrong username or password");
+		return auth.isLogged();
+	}
 	
 	private void deleteMember(int member_id){
 		if (a_view.deleteMemberConfirmation(member_id)) {

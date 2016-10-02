@@ -31,7 +31,8 @@ public class MemberList {
 	}
 	
 	public void addMember(Member md){
-		md.setId(memberList.size());	// unique ID = incremental counter
+		if (memberList.size() == 0) md.setId(1);
+		else md.setId(memberList.get(memberList.size()-1).getId()+1);	// unique ID = incremental counter
 		memberList.add(md);
 	}
 	

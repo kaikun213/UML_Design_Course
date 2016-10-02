@@ -112,13 +112,13 @@ public class Console implements IView {
 	@Override
 	public int selectMember() {
 		System.out.println("Please type the member-id of the member you want to select "); 
-		return scan.nextInt();
+		return Integer.parseInt(getInput(ValidationType.Integer));
 	}
 	
 	@Override
 	public int selectBoat() {
 		System.out.println("Please type the boat-ID of the boat you want to select "); 
-		return scan.nextInt();
+		return Integer.parseInt(getInput(ValidationType.Integer));
 	}
 	
 	@Override
@@ -206,7 +206,7 @@ public class Console implements IView {
 		new_Boat.setType(t);
 		
 		System.out.println("Please enter the length"); 
-		new_Boat.setLength(Double.parseDouble(getInput(ValidationType.Double)));
+		new_Boat.setLength(Double.parseDouble(getInput(ValidationType.PositiveDouble)));
 		 	
 		return new_Boat;
 	}
@@ -244,7 +244,7 @@ public class Console implements IView {
 		
 		System.out.println("Current length:" + b.getLength());
 		System.out.println("Please enter the new length"); 
-		b.setLength(Double.parseDouble(getInput(ValidationType.Double)));
+		b.setLength(Double.parseDouble(getInput(ValidationType.PositiveDouble)));
 		return b;
 	}
 
@@ -299,13 +299,25 @@ public class Console implements IView {
 	private String getInput(ValidationType type){
 		String result = "";
 		if (type == ValidationType.Integer) {
-			while (result.isEmpty() && scan.hasNextInt()){
-				result = Integer.toString(scan.nextInt());
+			while (result.isEmpty()){
+				if (scan.hasNextInt()) result = Integer.toString(scan.nextInt());
+				else {
+					scan.nextLine();
+					System.out.println("Please enter an Integer number");
+				}
 			}
 		}
-		else if (type == ValidationType.Double) {
-			while (result.isEmpty() && scan.hasNextDouble()){
-				result = Double.toString(scan.nextDouble());
+		else if (type == ValidationType.PositiveDouble) {
+			while (result.isEmpty()){
+				if (scan.hasNextDouble()) {
+					Double d = scan.nextDouble();
+					if (d >=0) result = Double.toString(d);
+					else System.out.println("Please enter a positive number");
+				}
+				else {
+					scan.nextLine();
+					System.out.println("Please enter a number");
+				}
 			}
 		}
 		else if (type == ValidationType.Character) {
@@ -413,6 +425,27 @@ public class Console implements IView {
 		
 		return true;																//  if all the conditions are untrue and never returned false, it is a correct number
 		
+	}
+
+	@Override
+	public void showAuthentification() {
+		System.out.println("Please log in to get permission to continue.");
+		System.out.println("__________________________________");
+	    System.out.println("|                                 |");
+	    System.out.println("|  -------Autentification-------  |") ; 
+	    System.out.println("|_________________________________|\n");
+	}
+
+	@Override
+	public String authentificateUsername() {
+		System.out.println("Please enter your Username:");
+		return getInput(ValidationType.String);
+	}
+
+	@Override
+	public String authentificatePassword() {
+		System.out.println("Please enter your Password:");
+		return getInput(ValidationType.String);
 	}
 
 

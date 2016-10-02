@@ -1,4 +1,4 @@
-package search;
+package model.search;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
