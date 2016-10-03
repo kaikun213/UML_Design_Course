@@ -17,7 +17,7 @@ public class ByBirthMonthCriteria implements SearchCriteria{
 		List<Member> filter_result = new ArrayList<Member>(); 
 	      
 	      for (Member m : members) {
-	    	  if (Integer.parseInt(m.getPersonal_number().substring(2, 3)) == month){
+	    	  if (Integer.parseInt(m.getPersonal_number().substring(2, 4)) == month){
 	            filter_result.add(m);
 	         }
 	      }
