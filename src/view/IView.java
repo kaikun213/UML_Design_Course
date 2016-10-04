@@ -15,7 +15,7 @@ public interface IView {
 	int selectMemberEdit();							// 1) edit name, 2) edit personal-number, 3) edit boats or 4) to quit editing
 	int selectBoatsEdit();							// 1) add boat  2) delete a boat 3) edit a boat 4) quit editing 
 	int selectBoat();								// returns unique boat-id
-	int selectSearch();								// 1) name 2) age 3) birth-month 4) boat-type
+	int selectSearch();								// 1) name 2) age 3) birth-month 4) boat-type 5) NestedSearch: (month||(name & minimumAge)
 	int selectMonth();								// selection from constant enum Calendar.Month -> returns index
 	int selectBoatsType();							// selection from constant enum Boat.BoatType -> returns index
 	

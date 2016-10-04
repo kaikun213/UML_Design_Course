@@ -101,17 +101,14 @@ public class Console implements IView {
 		System.out.println("2.) Delete a member");
 		System.out.println("3.) Edit a members/boats");
 		System.out.println("4.) Show members");
-		System.out.println("5.) Search members");
-		System.out.println("\nPlease type a number to choose your action.");
-		
+		System.out.println("5.) Search members");		
 		return getChoice(1,5);
 	}
 
 	@Override
 	public int selectListType() {
-		System.out.println("Please select a type of a list");
-		System.out.println("Press '1' to have the compact list or\n Pres '2' to have the verbose list");
-
+		System.out.println("Select a type of a list");
+		System.out.println("'1' to have the compact list or\n '2' to have the verbose list");
 		return getChoice(1,2);
 	}
 
@@ -134,7 +131,6 @@ public class Console implements IView {
 		System.out.println("2.) Edit personal number");
 		System.out.println("3.) Edit members boats");
 		System.out.println("4.) Cancel editing\n");
-		System.out.println("Please type a number to choose your action.");
 		return getChoice(1,4);
 	}
 	
@@ -145,7 +141,6 @@ public class Console implements IView {
 		System.out.println("2.) Delete a boat");
 		System.out.println("3.) Edit a boat");
 		System.out.println("4.) Cancel editing\n");
-		System.out.println("Please type a number to choose your action.");
 		return getChoice(1,4);
 	}
 	@Override
@@ -155,8 +150,8 @@ public class Console implements IView {
 		System.out.println("2.) By minimum age");
 		System.out.println("3.) By birth-month");
 		System.out.println("4.) By boatstype");
-		System.out.println("\nPlease type a number to choose your action.");
-		return getChoice(1,4);
+		System.out.println("5.) NestedSearch: (month||(name & minimumAge))");
+		return getChoice(1,5);
 	}
 	
 	public int selectMonth(){
@@ -181,7 +176,6 @@ public class Console implements IView {
 		for (int i=0;i<Boatstype.values().length;i++ ){
 			System.out.println("\t" + i + ".) " + Boatstype.values()[i]);
 		}
-		
 		return getChoice(0,Boatstype.values().length-1);
 
 	}
@@ -305,6 +299,7 @@ public class Console implements IView {
 	private int getChoice(int min,int max){
 		int choice;
 		do {
+			System.out.println("Please type a number to choose your action.");
 			choice = Integer.parseInt(getInput(ValidationType.Integer));
 		} while (choice<min || choice>max);
 		return choice;

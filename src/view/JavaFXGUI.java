@@ -137,13 +137,6 @@ public class JavaFXGUI implements Initializable,IView{
 
 
 	@Override
-	public void showEmptyBoatsListWarning() {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
 	public void showBoats(Iterator<Boat> b_it) {
 		// TODO Auto-generated method stub
 		

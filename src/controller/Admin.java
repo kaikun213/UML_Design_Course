@@ -4,11 +4,7 @@ import model.Member;
 import model.MemberList;
 import model.Authentification;
 import model.Boat.Boatstype;
-import model.search.ByBirthMonthCriteria;
-import model.search.ByBoatsTypeCriteria;
-import model.search.ByMinimumAgeCriteria;
-import model.search.ByNamePrefixCriteria;
-import model.search.SearchCriteria;
+import model.search.*;
 import view.IView;
 
 public class Admin {
@@ -193,6 +189,14 @@ public class Admin {
 					SearchCriteria byBoatsType = new ByBoatsTypeCriteria(Boatstype.values()[a_view.selectBoatsType()]);
 					search_list.setMemberList(byBoatsType.meetCriteria(md_list.getMemberList()));
 					break;
+				}
+				case 5: {     	// NestedSearch: (month||(name & minimumAge)
+					SearchCriteria byBirthMonth = new ByBirthMonthCriteria(a_view.selectMonth());
+					SearchCriteria byName = new ByNamePrefixCriteria(a_view.getSearchParam(ValidationType.String));
+					SearchCriteria byAge = new ByMinimumAgeCriteria(Integer.parseInt(a_view.getSearchParam(ValidationType.Integer)));
+					SearchCriteria byNameAndAge = new AndCriteria(byName,byAge);
+					SearchCriteria byBirthMonthOrNestedNameAndAge = new OrCriteria(byBirthMonth, byNameAndAge);
+					search_list.setMemberList(byBirthMonthOrNestedNameAndAge.meetCriteria(md_list.getMemberList()));
 				}
 				}	
 				
