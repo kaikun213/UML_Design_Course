@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.ResourceBundle;
 
+import controller.Admin.ValidationType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -46,14 +47,16 @@ public class JavaFXGUI implements Initializable,IView{
 	@Override
 	public int selectInstruction() {
 		InstructionPane.setVisible(true);
-		//while (!createMember.isPressed() || !deleteMember.isPressed() || !editMember.isPressed() || !showMembers.isPressed()){
+		/*while (!createMember.isPressed() || !deleteMember.isPressed() || !editMember.isPressed() || !showMembers.isPressed()){
 			createMember.setOnAction(e -> setInstruction(1));
 			deleteMember.setOnAction(e -> setInstruction(2));
 			editMember.setOnAction(e -> setInstruction(3));
 			showMembers.setOnAction(e -> setInstruction(4));
-		//}
+		}
 		System.out.println("InstructionPane unvisible after click");
 		return getInstruction();
+		*/
+		return 0;
 	}
 
 	@Override
@@ -179,6 +182,51 @@ public class JavaFXGUI implements Initializable,IView{
 	public boolean wantsToManage() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	@Override
+	public int selectSearch() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public String getSearchParam(ValidationType t) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public int selectMonth() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public int selectBoatsType() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public void showAuthentification() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public String authentificateUsername() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public String authentificatePassword() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void showSuccessMessage(String s) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void showErrorMessage(String s) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

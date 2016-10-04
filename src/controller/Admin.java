@@ -30,10 +30,7 @@ public class Admin {
 		this.a_view = a_view;
 		md_list = dao.MembersDAO.jaxbXMLToObject();		//  read out of XML
 	}
-	
-	public void showWelcomeMessage(){
-		a_view.showWelcomeMessage();
-	}
+
 	public void manage(){
 		a_view.showWelcomeMessage();
 		do {
@@ -142,7 +139,7 @@ public class Admin {
 					a_view.showSuccessMessage("***** SUCCESSFUL CREATED NEW BOAT *****");		 	
 			}
 			if (i == 2 ){																// delete boat
-				if (!editMember.getBoats().hasNext()) a_view.showEmptyBoatsListWarning();
+				if (!editMember.getBoats().hasNext()) a_view.showErrorMessage("WARNING: Unfortunatelly this member has no registered boats to edit/delete!");
 				else {
 					a_view.showBoats(editMember.getBoats());
 					int b_id = selectBoat(editMember);
@@ -153,7 +150,7 @@ public class Admin {
 				}
 			}
 			if (i == 3){																// edit boat
-				if (!editMember.getBoats().hasNext()) a_view.showEmptyBoatsListWarning();
+				if (!editMember.getBoats().hasNext()) a_view.showErrorMessage("WARNING: Unfortunatelly this member has no registered boats to edit/delete!");
 				else {
 					a_view.showBoats(editMember.getBoats());
 					int b_id = selectBoat(editMember);

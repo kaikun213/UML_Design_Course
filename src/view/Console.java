@@ -10,9 +10,6 @@ import model.Boat.Boatstype;
 
 public class Console implements IView {
 	
-	// input errors: scan name (e.g. put more than 2 strings) & scanner in general
-	// format personal number + not more than 12month etc..
-	
 	private Scanner scan;
 	
 	public Console(){
@@ -85,6 +82,15 @@ public class Console implements IView {
 	
 	public void showErrorMessage(String s){
 		System.err.println(s);
+	}
+	
+	@Override
+	public void showAuthentification() {
+		System.out.println("Please log in to get permission to continue.");
+		System.out.println("__________________________________");
+	    System.out.println("|                                 |");
+	    System.out.println("|  -------Autentification-------  |") ; 
+	    System.out.println("|_________________________________|\n");
 	}
 
 /* ******************** select ******************** */
@@ -211,11 +217,6 @@ public class Console implements IView {
 		return new_Boat;
 	}
 	
-	@Override
-	public String getSearchParam(ValidationType t) {
-		System.out.println("Please enter search-argument:");
-		return getInput(t);
-	}
 	
 /* ******************** edit ******************** */
 	public String editMemberName(){
@@ -281,11 +282,24 @@ public class Console implements IView {
 		return (Character.compare(getInput(ValidationType.String).charAt(0), 'q') != 0);
 	}
 	
+	@Override
+	public String getSearchParam(ValidationType t) {
+		System.out.println("Please enter search-argument:");
+		return getInput(t);
+	}
 
 	@Override
-	public void showEmptyBoatsListWarning() {
-		System.out.println("----------- WARNING: Unfortunatelly this member has no registered boats to edit/delete!  -----------");		
+	public String authentificateUsername() {
+		System.out.println("Please enter your Username:");
+		return getInput(ValidationType.String);
 	}
+
+	@Override
+	public String authentificatePassword() {
+		System.out.println("Please enter your Password:");
+		return getInput(ValidationType.String);
+	}
+
 	
 /* ******************** private help functions ******************** */	
 	private int getChoice(int min,int max){
@@ -425,27 +439,6 @@ public class Console implements IView {
 		
 		return true;																//  if all the conditions are untrue and never returned false, it is a correct number
 		
-	}
-
-	@Override
-	public void showAuthentification() {
-		System.out.println("Please log in to get permission to continue.");
-		System.out.println("__________________________________");
-	    System.out.println("|                                 |");
-	    System.out.println("|  -------Autentification-------  |") ; 
-	    System.out.println("|_________________________________|\n");
-	}
-
-	@Override
-	public String authentificateUsername() {
-		System.out.println("Please enter your Username:");
-		return getInput(ValidationType.String);
-	}
-
-	@Override
-	public String authentificatePassword() {
-		System.out.println("Please enter your Password:");
-		return getInput(ValidationType.String);
 	}
 
 
