@@ -81,10 +81,7 @@ public class Admin {
 		a_view.showAuthentification();
 		String username = a_view.authentificateUsername();
 		String password = a_view.authentificatePassword();
-		if (auth.authentificate(username, password)) {
-			auth.setLogged(true);
-			a_view.showSuccessMessage("SUCCESSFUL LOGGED IN");
-		}
+		if (auth.authentificate(username, password)) a_view.showSuccessMessage("SUCCESSFUL LOGGED IN");
 		else a_view.showErrorMessage("Wrong username or password");
 		return auth.isLogged();
 	}
