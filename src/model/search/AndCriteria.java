@@ -1,8 +1,6 @@
 package model.search;
 
-import java.util.List;
-
-import model.Member;
+import model.MemberList;
 
 public class AndCriteria implements SearchCriteria {
 
@@ -15,9 +13,9 @@ public class AndCriteria implements SearchCriteria {
 		   }
 
 		   @Override
-		   public List<Member> meetCriteria(List<Member> members) {
+		   public MemberList meetCriteria(MemberList members) {
 		   
-		      List<Member> firstCriteriaPersons = criteria.meetCriteria(members);		
+		      MemberList firstCriteriaPersons = criteria.meetCriteria(members);		
 		      return otherCriteria.meetCriteria(firstCriteriaPersons);
 		   }
 }

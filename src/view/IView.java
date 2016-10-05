@@ -1,7 +1,5 @@
 package view;
 
-import java.util.Iterator;
-
 import controller.Admin.ValidationType;
 import model.Boat;
 import model.Member;
@@ -20,10 +18,10 @@ public interface IView {
 	int selectBoatsType();							// selection from constant enum Boat.BoatType -> returns index
 	
 	void showWelcomeMessage();
-	void showCompactList(Iterator<Member> m_it); 	// “Compact List”; name, member id and number of boats
-	void showVerboseList(Iterator<Member> m_it); 	// “Verbose List”; name, personal number, member id and boats with boat information
-	void showMember(int id, String name, String personal_number, Iterator<Boat> b_it);
-	void showBoats(Iterator<Boat> b_it);			// show a list of all boats of the member
+	void showCompactList(Iterable<Member> m_it); 	// “Compact List”; name, member id and number of boats
+	void showVerboseList(Iterable<Member> m_it); 	// “Verbose List”; name, personal number, member id and boats with boat information
+	void showMember(int id, String name, String personal_number, Iterable<Boat> b_it);
+	void showBoats(Iterable<Boat> b_it);			// show a list of all boats of the member
 	void showSuccessMessage(String s);
 	void showErrorMessage(String s);
 	void showAuthentification();

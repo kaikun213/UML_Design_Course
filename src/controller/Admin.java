@@ -40,7 +40,7 @@ public class Admin {
 			else if (i == 2) {		// delete member
 				if (auth.isLogged() || login()){
 					showList(md_list);
-					if (!md_list.getMemberList().isEmpty()){
+					if (md_list.getMemberList().iterator().hasNext()){
 						int m_id = selectMember(md_list);
 						showMember(m_id);
 						deleteMember(m_id);
@@ -50,7 +50,7 @@ public class Admin {
 			else if (i == 3) {		// edit member/boats
 				if (auth.isLogged() || login()){
 					showList(md_list);
-					if (!md_list.getMemberList().isEmpty()){
+					if (md_list.getMemberList().iterator().hasNext()){
 						int m_id = selectMember(md_list);
 						showMember(m_id);
 						editMember(m_id);
@@ -59,7 +59,7 @@ public class Admin {
 			}
 			else if (i == 4){		// list members
 				showList(md_list);
-				if (!md_list.getMemberList().isEmpty()){
+				if (md_list.getMemberList().iterator().hasNext()){
 					int m_id = selectMember(md_list);
 					showMember(m_id);
 				}				
@@ -67,7 +67,7 @@ public class Admin {
 			else if (i == 5){		// search members
 				MemberList search_result = searchMembers();
 				showList(search_result);
-				if (!search_result.getMemberList().isEmpty()){
+				if (search_result.getMemberList().iterator().hasNext()){
 					int m_id = selectMember(md_list);
 					showMember(m_id);
 				}
@@ -106,8 +106,8 @@ public class Admin {
 	
 	private void showList(MemberList list){
 		i = a_view.selectListType();
-		if (i == 1) a_view.showCompactList(list.getIterator());
-		else if (i == 2) a_view.showVerboseList(list.getIterator());
+		if (i == 1) a_view.showCompactList(list.getMemberList());
+		else if (i == 2) a_view.showVerboseList(list.getMemberList());
 
 	}
 	
@@ -115,7 +115,7 @@ public class Admin {
 		int a_member;
 		do {
 		a_member = a_view.selectMember();
-		} while (!list.existMember(a_member));
+		} while (!list.containsMember(a_member));
 		return a_member;
 	}
 	
@@ -132,7 +132,7 @@ public class Admin {
 					a_view.showSuccessMessage("***** SUCCESSFUL CREATED NEW BOAT *****");		 	
 			}
 			if (i == 2 ){																// delete boat
-				if (!editMember.getBoats().hasNext()) a_view.showErrorMessage("WARNING: Unfortunatelly this member has no registered boats to edit/delete!");
+				if (!editMember.getBoats().iterator().hasNext()) a_view.showErrorMessage("WARNING: Unfortunatelly this member has no registered boats to edit/delete!");
 				else {
 					a_view.showBoats(editMember.getBoats());
 					int b_id = selectBoat(editMember);
@@ -143,7 +143,7 @@ public class Admin {
 				}
 			}
 			if (i == 3){																// edit boat
-				if (!editMember.getBoats().hasNext()) a_view.showErrorMessage("WARNING: Unfortunatelly this member has no registered boats to edit/delete!");
+				if (!editMember.getBoats().iterator().hasNext()) a_view.showErrorMessage("WARNING: Unfortunatelly this member has no registered boats to edit/delete!");
 				else {
 					a_view.showBoats(editMember.getBoats());
 					int b_id = selectBoat(editMember);
@@ -169,22 +169,22 @@ public class Admin {
 				switch (i){
 				case 1: {		//by name
 					SearchCriteria byName = new ByNamePrefixCriteria(a_view.getSearchParam(ValidationType.String));
-					search_list.setMemberList(byName.meetCriteria(md_list.getMemberList()));
+					search_list = byName.meetCriteria(md_list);
 				}
 					break;
 				case 2: {		//by age
 					SearchCriteria byAge = new ByMinimumAgeCriteria(Integer.parseInt(a_view.getSearchParam(ValidationType.Integer)));
-					search_list.setMemberList(byAge.meetCriteria(md_list.getMemberList()));
+					search_list = byAge.meetCriteria(md_list);
 				}
 					break;
 				case 3:	{		//by birth month
 					SearchCriteria byBirthMonth = new ByBirthMonthCriteria(a_view.selectMonth());
-					search_list.setMemberList(byBirthMonth.meetCriteria(md_list.getMemberList()));
+					search_list = byBirthMonth.meetCriteria(md_list);
 					break;
 				}
 				case 4: {		//by boatstype
 					SearchCriteria byBoatsType = new ByBoatsTypeCriteria(Boatstype.values()[a_view.selectBoatsType()]);
-					search_list.setMemberList(byBoatsType.meetCriteria(md_list.getMemberList()));
+					search_list = byBoatsType.meetCriteria(md_list);
 					break;
 				}
 				case 5: {     	// NestedSearch: (month||(name & minimumAge)
@@ -193,7 +193,7 @@ public class Admin {
 					SearchCriteria byAge = new ByMinimumAgeCriteria(Integer.parseInt(a_view.getSearchParam(ValidationType.Integer)));
 					SearchCriteria byNameAndAge = new AndCriteria(byName,byAge);
 					SearchCriteria byBirthMonthOrNestedNameAndAge = new OrCriteria(byBirthMonth, byNameAndAge);
-					search_list.setMemberList(byBirthMonthOrNestedNameAndAge.meetCriteria(md_list.getMemberList()));
+					search_list = byBirthMonthOrNestedNameAndAge.meetCriteria(md_list);
 				}
 				}	
 				

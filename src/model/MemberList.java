@@ -1,8 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import javax.xml.bind.annotation.*;
 
@@ -11,23 +9,14 @@ import javax.xml.bind.annotation.*;
 public class MemberList {
 	
 	@XmlElement(name="member")
-	List<Member> memberList;
+	ArrayList<Member> memberList;
 
-	public MemberList(){
+	public MemberList(){						// constructor
 		memberList = new ArrayList<Member>();
 	}
 	
-	public List<Member> getMemberList() {
+	public Iterable<Member> getMemberList() {	// encapsulated: getIterable
 		return memberList;
-	}
-	public void setMemberList(List<Member> memberList) {
-		this.memberList = memberList;
-	}
-	
-	public MemberList copy(){
-		MemberList copied_list = new MemberList();
-		copied_list.setMemberList(memberList);
-		return copied_list;
 	}
 	
 	public void addMember(Member md){
@@ -53,11 +42,7 @@ public class MemberList {
 		return null;							// existMember before
 	}
 	
-	public Iterator<Member> getIterator(){
-		return memberList.iterator();
-	}
-	
-	public boolean existMember(int id){
+	public boolean containsMember(int id){
 		for (Member m : memberList) {
 			if (m.getId() == id){
 				return true;

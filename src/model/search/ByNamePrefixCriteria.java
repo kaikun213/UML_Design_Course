@@ -1,8 +1,6 @@
 package model.search;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import model.MemberList;
 import model.Member;
 
 public class ByNamePrefixCriteria implements SearchCriteria {
@@ -14,12 +12,12 @@ public class ByNamePrefixCriteria implements SearchCriteria {
 		}
 	
 		@Override
-	   public List<Member> meetCriteria(List<Member> members) {
-	      List<Member> filter_result = new ArrayList<Member>(); 
+	   public MemberList meetCriteria(MemberList members) {
+	      MemberList filter_result = new MemberList(); 
 	      
-	      for (Member m : members) {
+	      for (Member m : members.getMemberList()) {
 	    	  if (m.getName().startsWith(namePrefix)){
-	            filter_result.add(m);
+	            filter_result.addMember(m);
 	         }
 	      }
 	      return filter_result;

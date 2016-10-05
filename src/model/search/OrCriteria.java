@@ -1,7 +1,7 @@
 package model.search;
 
-import java.util.List;
 
+import model.MemberList;
 import model.Member;
 
 public class OrCriteria implements SearchCriteria{
@@ -15,13 +15,13 @@ public class OrCriteria implements SearchCriteria{
 	   }
 
 	   @Override
-	   public List<Member> meetCriteria(List<Member> members) {
-		   List<Member> firstCriteriaItems = criteria.meetCriteria(members);
-		      List<Member> otherCriteriaItems = otherCriteria.meetCriteria(members);
+	   public MemberList meetCriteria(MemberList members) {
+		  MemberList firstCriteriaItems = criteria.meetCriteria(members);
+		      MemberList otherCriteriaItems = otherCriteria.meetCriteria(members);
 
-		      for (Member m : otherCriteriaItems) {
-		         if(!firstCriteriaItems.contains(m)){
-		            firstCriteriaItems.add(m);
+		      for (Member m : otherCriteriaItems.getMemberList()) {
+		         if(!firstCriteriaItems.containsMember(m.getId())){
+		            firstCriteriaItems.addMember(m);
 		         }
 		      }	
 		      return firstCriteriaItems;

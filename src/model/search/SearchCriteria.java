@@ -1,10 +1,8 @@
 package model.search;
 
-import java.util.List;
-
-import model.Member;
+import model.MemberList;
 
 /* Filter design pattern */
 public interface SearchCriteria {
-	   public List<Member> meetCriteria(List<Member> members);
+	   public MemberList meetCriteria(MemberList members);
 }

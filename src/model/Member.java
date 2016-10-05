@@ -1,7 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -53,8 +52,8 @@ public class Member {
 		if (!boats.remove(getBoat(b_id))) System.err.println("Boat not found!");; 
 	}
 	
-	public Iterator<Boat> getBoats(){
-		return boats.iterator();
+	public Iterable<Boat> getBoats(){
+		return boats;
 	}
 	
 	private int getIndexOfBoat(int b_id){

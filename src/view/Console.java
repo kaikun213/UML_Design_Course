@@ -1,6 +1,6 @@
 package view;
 
-import java.util.Iterator;
+import java.util.Collection;
 import java.util.Scanner;
 
 import controller.Admin.ValidationType;
@@ -26,51 +26,43 @@ public class Console implements IView {
 	}
 	
 	@Override
-	public void showCompactList(Iterator<Member> m_it) {
-		if (!m_it.hasNext()) System.out.println("Unfortunatelly the list is empty.");
+	public void showCompactList(Iterable<Member> members) {
+		if (!members.iterator().hasNext()) System.out.println("Unfortunatelly the list is empty.");
 		int counter = 1;
-		while (m_it.hasNext()){
-			Member m = m_it.next();
+		for (Member m : members){
 			System.out.println(counter++ +".) \t member-ID: " + m.getId());
 			System.out.println("\t name: " + m.getName());
 			
 			// sub Iteration to count the number of boats.
-			int boat_counter = 0;
-			Iterator<Boat> b_it = m.getBoats();
-			while (b_it.hasNext()){
-				boat_counter++;
-				b_it.next();
-			}
+			int boat_counter = getIterableSize(m.getBoats());
 			System.out.println("\t boat number: " + boat_counter);
 		}
 	}
 
 	@Override
-	public void showVerboseList(Iterator<Member> m_it) {
-		if (!m_it.hasNext()) System.out.println("Unfortunatelly the list is empty.");
+	public void showVerboseList(Iterable<Member> members) {
+		if (!members.iterator().hasNext()) System.out.println("Unfortunatelly the list is empty.");
 		int counter = 1;
-		while (m_it.hasNext()){
-			Member m = m_it.next();
+		for (Member m : members){
 			System.out.print("\n" + counter++ + ".)");
 			showMember(m.getId(),m.getName(),m.getPersonal_number(),m.getBoats());
 		}
 	}
 	
 	@Override
-	public void showMember(int id, String name, String personal_number, Iterator<Boat> b_it) {
+	public void showMember(int id, String name, String personal_number, Iterable<Boat> boats) {
 		System.out.println("\tmember-ID: " + id);
 		System.out.println("\tname: " + name);
 		System.out.println("\tpersonal-number: " + personal_number + "");
 		// sub Iteration to count the number of boats.
-		showBoats(b_it);
+		showBoats(boats);
 	}
 	
 	@Override
-	public void showBoats(Iterator<Boat> boats) {
+	public void showBoats(Iterable<Boat> boats) {
 		int boat_counter = 1;
 		System.out.println("\tboats:");
-		while (boats.hasNext()){
-			Boat b = boats.next();
+		for (Boat b : boats){
 			System.out.println("\t\t" + boat_counter++ + ".) " + "Boat-ID: "  + b.getId());
 			System.out.println("\t\t    " + b.getType() + " : " + b.getLength() + "m\n");
 		}
@@ -108,7 +100,7 @@ public class Console implements IView {
 	@Override
 	public int selectListType() {
 		System.out.println("Select a type of a list");
-		System.out.println("'1' to have the compact list or\n '2' to have the verbose list");
+		System.out.println("1.) Compact list \n2.) Verbose list");
 		return getChoice(1,2);
 	}
 
@@ -303,6 +295,20 @@ public class Console implements IView {
 			choice = Integer.parseInt(getInput(ValidationType.Integer));
 		} while (choice<min || choice>max);
 		return choice;
+	}
+	
+	@SuppressWarnings("unused")
+	private int getIterableSize(Iterable<?> values){
+		if (values instanceof Collection<?>) {
+			  return ((Collection<?>)values).size();
+		}
+		else {
+			int counter = 0;
+			for (Object o : values){
+				counter++;
+			}
+			return counter;
+		}
 	}
 	
 	private String getInput(ValidationType type){

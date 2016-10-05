@@ -1,9 +1,8 @@
 package model.search;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
+
+import model.MemberList;
 import model.Boat;
 import model.Member;
 
@@ -16,18 +15,15 @@ public class ByBoatsTypeCriteria implements SearchCriteria {
 	}
 
 	@Override
-	public List<Member> meetCriteria(List<Member> members) {
-		List<Member> filter_result = new ArrayList<Member>(); 
+	public MemberList meetCriteria(MemberList members) {
+		MemberList filter_result = new MemberList();
 	      
-	      for (Member m : members) {
-	    	  Iterator<Boat> b_it = m.getBoats();
-	    	  while (b_it.hasNext()){
-	    		  if (b_it.next().getType().equals(boatstype)){
-	  	            filter_result.add(m);
-	  	         }
+	      for (Member m : members.getMemberList()){ 
+	    	  for (Boat b : m.getBoats()){
+	    		  if (b.getType().equals(boatstype))filter_result.addMember(m);
 	    	  }
 	      }
-	      return filter_result;
+	   return filter_result;
 	}
 
 }

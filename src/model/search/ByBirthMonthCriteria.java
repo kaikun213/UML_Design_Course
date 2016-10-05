@@ -1,8 +1,7 @@
 package model.search;
 
-import java.util.ArrayList;
-import java.util.List;
 import model.Member;
+import model.MemberList;
 
 public class ByBirthMonthCriteria implements SearchCriteria{
 	
@@ -13,12 +12,12 @@ public class ByBirthMonthCriteria implements SearchCriteria{
 	}
 
 	@Override
-	public List<Member> meetCriteria(List<Member> members) {
-		List<Member> filter_result = new ArrayList<Member>(); 
+	public MemberList meetCriteria(MemberList members) {
+		MemberList filter_result = new MemberList(); 
 	      
-	      for (Member m : members) {
+	      for (Member m : members.getMemberList()) {
 	    	  if (Integer.parseInt(m.getPersonal_number().substring(2, 4)) == month){
-	            filter_result.add(m);
+	            filter_result.addMember(m);
 	         }
 	      }
 	      return filter_result;
