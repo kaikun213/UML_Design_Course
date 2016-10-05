@@ -94,14 +94,12 @@ public class Admin {
 	}
 	
 	private void editMember(int member_id){
-		Member editMember = md_list.getMember(member_id);
 		do{
 			i = a_view.selectMemberEdit();
-			if (i==1) editMember.setName(a_view.editMemberName());
-			else if (i==2) editMember.setPersonal_number(a_view.editMemberPersonalNumber());
-			else if (i==3) editMembersBoats(editMember);
+			if (i==1) md_list.editMember(a_view.editMemberName(md_list.getMember(member_id)));
+			else if (i==2) md_list.editMember(a_view.editMemberPersonalNumber(md_list.getMember(member_id)));
+			else if (i==3) editMembersBoats(member_id);
 		} while (i != 4);
-		md_list.editMember(editMember);
 	}
 	
 	private void showList(MemberList list){
@@ -124,30 +122,30 @@ public class Admin {
 		a_view.showMember(md.getId(),md.getName(),md.getPersonal_number(), md.getBoats());
 	}
 	
-	private void editMembersBoats(Member editMember){
+	private void editMembersBoats(int editMember_id){
 		do{
 			i = a_view.selectBoatsEdit();
 			if (i == 1) {																// create boat
-					editMember.addBoat(a_view.createBoat());						
+					md_list.getMember(editMember_id).addBoat(a_view.createBoat());						
 					a_view.showSuccessMessage("***** SUCCESSFUL CREATED NEW BOAT *****");		 	
 			}
 			if (i == 2 ){																// delete boat
-				if (!editMember.getBoats().iterator().hasNext()) a_view.showErrorMessage("WARNING: Unfortunatelly this member has no registered boats to edit/delete!");
+				if (!md_list.getMember(editMember_id).getBoats().iterator().hasNext()) a_view.showErrorMessage("WARNING: Unfortunatelly this member has no registered boats to edit/delete!");
 				else {
-					a_view.showBoats(editMember.getBoats());
-					int b_id = selectBoat(editMember);
+					a_view.showBoats(md_list.getMember(editMember_id).getBoats());
+					int b_id = selectBoat(md_list.getMember(editMember_id));
 					if (a_view.deleteBoatConfirmation(b_id)) {
-						editMember.deleteBoat(b_id);
+						md_list.getMember(editMember_id).deleteBoat(b_id);
 						a_view.showSuccessMessage("SUCCESSFUL DELETED BOAT " + b_id);
 					}
 				}
 			}
 			if (i == 3){																// edit boat
-				if (!editMember.getBoats().iterator().hasNext()) a_view.showErrorMessage("WARNING: Unfortunatelly this member has no registered boats to edit/delete!");
+				if (!md_list.getMember(editMember_id).getBoats().iterator().hasNext()) a_view.showErrorMessage("WARNING: Unfortunatelly this member has no registered boats to edit/delete!");
 				else {
-					a_view.showBoats(editMember.getBoats());
-					int b_id = selectBoat(editMember);
-					editMember.editBoat(a_view.editBoat(editMember.getBoat(b_id)));
+					a_view.showBoats(md_list.getMember(editMember_id).getBoats());
+					int b_id = selectBoat(md_list.getMember(editMember_id));
+					md_list.getMember(editMember_id).editBoat(a_view.editBoat(md_list.getMember(editMember_id).getBoat(b_id)));
 					a_view.showSuccessMessage("***** SUCCESSFUL EDITED BOAT " + b_id + " *****");		 	
 				}
 			}

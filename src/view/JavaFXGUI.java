@@ -27,6 +27,8 @@ public class JavaFXGUI implements Initializable,IView{
 	
 	private void setInstruction(int i){
 		instruction = i;
+		System.out.println(i);
+		
 	}
 	private int getInstruction(){
 		return instruction;
@@ -128,16 +130,6 @@ public class JavaFXGUI implements Initializable,IView{
 		return false;
 	}
 	@Override
-	public String editMemberName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public String editMemberPersonalNumber() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
 	public Boat createBoat() {
 		// TODO Auto-generated method stub
 		return null;
@@ -176,6 +168,16 @@ public class JavaFXGUI implements Initializable,IView{
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 		
+	}
+	@Override
+	public Member editMemberName(Member editMember) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public Member editMemberPersonalNumber(Member editMember) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

@@ -205,18 +205,20 @@ public class Console implements IView {
 	
 	
 /* ******************** edit ******************** */
-	public String editMemberName(){
+	public Member editMemberName(Member editMember){
 		System.out.println("Please enter the new first name and last name");
 		String name = getInput(ValidationType.String); 	//("^[a-zA-Z ]*$");
+		editMember.setName(name);
 		System.out.println("***** SUCCESSFUL CHANGED MEMBER NAME *****");		 	
-		return name;	
+		return editMember;	
 	}
 	
-	public String editMemberPersonalNumber(){
+	public Member editMemberPersonalNumber(Member editMember){
 		System.out.println("Please enter the new personal number in this form YYMMDD-XXXX");
 		String personal_number = getInput(ValidationType.SwedishID);		// ("^[\\d]{6}-{1}[\\d]{4}$");
+		editMember.setPersonal_number(personal_number);
 		System.out.println("***** SUCCESSFUL CHANGED PERSONAL-NUMBER *****");		 	
-		return personal_number;
+		return editMember;
 	}
 	
 

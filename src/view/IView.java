@@ -29,8 +29,8 @@ public interface IView {
 	
 	Member createMember();							// gets unique ID from system
 	boolean deleteMemberConfirmation(int id);		// true = deletion , id = unique id of selected member
-	String editMemberName();
-	String editMemberPersonalNumber();
+	Member editMemberName(Member editMember);
+	Member editMemberPersonalNumber(Member editMember);
 
 	Boat createBoat();
 	Boat editBoat(Boat b);							// edit boats type and length, not ID!
