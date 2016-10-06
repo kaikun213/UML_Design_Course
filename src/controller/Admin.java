@@ -75,6 +75,7 @@ public class Admin {
 		} while (a_view.wantsToManage());
 									
 		dao.MembersDAO.jaxbObjectToXML(md_list);	// save data in XML
+		a_view.closeScanner(); 						// close scanner for good practice
 	}	
 	
 	private boolean login(){

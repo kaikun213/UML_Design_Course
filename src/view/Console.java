@@ -15,28 +15,7 @@ public class Console implements IView {
 	public Console(){
 		scan = new Scanner(System.in);
 	}
-	/*
-	public enum Events {
-		CreateMember,
-		DeleteMember,
-		EditMember,
-		ShowMembers,
-		SearchMembers,
-		ViewCompactList,
-		ViewVerboseList,
-		EditMemberName,
-		EditMemberPersonalNr,
-		EditMemberBoats,
-		CreateBoat,
-		DeleteBoat,
-		EditBoat,
-		SearchByNamePrefix,
-		SearchByMinimumAge,
-		SearchByBirthMonth,
-		SearchByBoatsType,
-		SearchNested,
-	}
-	*/
+
 /* ******************** show ******************** */
 	@Override
 	public void showWelcomeMessage() {
@@ -284,13 +263,14 @@ public class Console implements IView {
 		if (Character.compare(c, 'y') == 0) return true;
 		else return false;
 	}
-	
-/* ******************** search & co ******************** */
+/* ******************** wantsTo-Methods ******************** */
 	@Override
 	public boolean wantsToManage() {
 		System.out.println("Press any char to contine or 'q' to quit");
 		return (Character.compare(getInput(ValidationType.String).charAt(0), 'q') != 0);
 	}
+	
+/* ******************** search & authentication ******************** */
 	
 	@Override
 	public String getSearchParam(ValidationType t) {
@@ -309,7 +289,10 @@ public class Console implements IView {
 		System.out.println("Please enter your Password:");
 		return getInput(ValidationType.String);
 	}
-
+	
+	public void closeScanner(){
+		scan.close();
+	}
 	
 /* ******************** private help functions ******************** */	
 	private int getChoice(int min,int max){
@@ -465,8 +448,6 @@ public class Console implements IView {
 		return true;																//  if all the conditions are untrue and never returned false, it is a correct number
 		
 	}
-
-
 	
 }
 	

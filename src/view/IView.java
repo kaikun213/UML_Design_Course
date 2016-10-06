@@ -42,5 +42,43 @@ public interface IView {
 	String authentificatePassword();
 	
 	boolean wantsToManage();
+	void closeScanner();
 
+	
+	/*	ideas for handling low level input
+	boolean wantsToCreateMember();
+	boolean wantsToDeleteMember();
+	boolean wantsToEditMember();
+	boolean wantsToShowMembers();
+	boolean wantsToSearchMembers();
+	boolean wantsToViewCompactList();
+	boolean wantsToViewVerboseList();
+	boolean wantsToEditMemberName();
+	boolean wantsToEditMemberPersonalNr();
+	boolean wantsToEditMemberBoats();
+	boolean wantsToCreateBoat();
+	boolean wantsToDeleteBoat();
+	boolean wantsToEditBoat();
+	/*
+	public enum Events {
+		CreateMember,
+		DeleteMember,
+		EditMember,
+		ShowMembers,
+		SearchMembers,
+		ViewCompactList,
+		ViewVerboseList,
+		EditMemberName,
+		EditMemberPersonalNr,
+		EditMemberBoats,
+		CreateBoat,
+		DeleteBoat,
+		EditBoat,
+		SearchByNamePrefix,
+		SearchByMinimumAge,
+		SearchByBirthMonth,
+		SearchByBoatsType,
+		SearchNested,
+	}
+	*/
 }

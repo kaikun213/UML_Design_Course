@@ -26,9 +26,7 @@ public class JavaFXGUI implements Initializable,IView{
 	private int instruction = 0;
 	
 	private void setInstruction(int i){
-		instruction = i;
-		System.out.println(i);
-		
+		instruction = i;		
 	}
 	private int getInstruction(){
 		return instruction;
@@ -178,6 +176,11 @@ public class JavaFXGUI implements Initializable,IView{
 	public Member editMemberPersonalNumber(Member editMember) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	@Override
+	public void closeScanner() {
+		// TODO Auto-generated method stub
+		
 	}
 
 
