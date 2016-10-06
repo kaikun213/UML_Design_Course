@@ -15,7 +15,28 @@ public class Console implements IView {
 	public Console(){
 		scan = new Scanner(System.in);
 	}
-
+	/*
+	public enum Events {
+		CreateMember,
+		DeleteMember,
+		EditMember,
+		ShowMembers,
+		SearchMembers,
+		ViewCompactList,
+		ViewVerboseList,
+		EditMemberName,
+		EditMemberPersonalNr,
+		EditMemberBoats,
+		CreateBoat,
+		DeleteBoat,
+		EditBoat,
+		SearchByNamePrefix,
+		SearchByMinimumAge,
+		SearchByBirthMonth,
+		SearchByBoatsType,
+		SearchNested,
+	}
+	*/
 /* ******************** show ******************** */
 	@Override
 	public void showWelcomeMessage() {
@@ -86,6 +107,7 @@ public class Console implements IView {
 	}
 
 /* ******************** select ******************** */
+	
 	@Override
 	public int selectInstruction() { 
 		System.out.println("----------- Instructions -----------");
@@ -96,7 +118,7 @@ public class Console implements IView {
 		System.out.println("5.) Search members");		
 		return getChoice(1,5);
 	}
-
+	
 	@Override
 	public int selectListType() {
 		System.out.println("Select a type of a list");
@@ -115,7 +137,7 @@ public class Console implements IView {
 		System.out.println("Please type the boat-ID of the boat you want to select "); 
 		return Integer.parseInt(getInput(ValidationType.Integer));
 	}
-	
+
 	@Override
 	public int selectMemberEdit() {
 		System.out.println("----------- Edit Member -----------");
