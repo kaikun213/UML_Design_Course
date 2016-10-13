@@ -11,7 +11,8 @@ import model.MemberRegistry;
 
 public class MembersDAO {
 	
-	private static final String File = "./resources/members.xml";
+	private static final String File = "./resources/members.xml";			// in eclipse
+	//private static final String File = "resources/members.xml";				// as .jar
 	
     public static MemberRegistry jaxbXMLToObject() {
         try {
@@ -24,7 +25,6 @@ public class MembersDAO {
         }
         return null;
     }
-
 
     public static void jaxbObjectToXML(MemberRegistry md_list) {
 
