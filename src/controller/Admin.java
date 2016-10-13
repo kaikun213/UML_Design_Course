@@ -1,7 +1,6 @@
 package controller;
 
-import model.Member;
-import model.MemberList;
+import model.MemberRegistry;
 import model.Authentification;
 import model.Boat.Boatstype;
 import model.search.*;
@@ -10,7 +9,7 @@ import view.IView;
 public class Admin {
 	
 	private IView a_view;
-	private MemberList md_list;
+	private MemberRegistry md_list;
 	private Authentification auth = new Authentification();
 	private int i;					// users choice saved as int
 	
@@ -65,7 +64,7 @@ public class Admin {
 				}				
 			}
 			else if (i == 5){		// search members
-				MemberList search_result = searchMembers();
+				MemberRegistry search_result = searchMembers();
 				showList(search_result);
 				if (search_result.getMemberList().iterator().hasNext()){
 					int m_id = selectMember(md_list);
@@ -103,14 +102,14 @@ public class Admin {
 		} while (i != 4);
 	}
 	
-	private void showList(MemberList list){
+	private void showList(MemberRegistry list){
 		i = a_view.selectListType();
 		if (i == 1) a_view.showCompactList(list.getMemberList());
 		else if (i == 2) a_view.showVerboseList(list.getMemberList());
 
 	}
 	
-	private int selectMember(MemberList list){
+	private int selectMember(MemberRegistry list){
 		int a_member;
 		do {
 		a_member = a_view.selectMember();
@@ -119,8 +118,7 @@ public class Admin {
 	}
 	
 	private void showMember(int member_id){
-		Member md = md_list.getMember(member_id);
-		a_view.showMember(md.getId(),md.getName(),md.getPersonal_number(), md.getBoats());
+		a_view.showMember(md_list.getMember(member_id).getId(),md_list.getMember(member_id).getName(),md_list.getMember(member_id).getPersonal_number(), md_list.getMember(member_id).getBoats());
 	}
 	
 	private void editMembersBoats(int editMember_id){
@@ -134,7 +132,7 @@ public class Admin {
 				if (!md_list.getMember(editMember_id).getBoats().iterator().hasNext()) a_view.showErrorMessage("WARNING: Unfortunatelly this member has no registered boats to edit/delete!");
 				else {
 					a_view.showBoats(md_list.getMember(editMember_id).getBoats());
-					int b_id = selectBoat(md_list.getMember(editMember_id));
+					int b_id = selectBoat(editMember_id);
 					if (a_view.deleteBoatConfirmation(b_id)) {
 						md_list.getMember(editMember_id).deleteBoat(b_id);
 						a_view.showSuccessMessage("SUCCESSFUL DELETED BOAT " + b_id);
@@ -145,7 +143,7 @@ public class Admin {
 				if (!md_list.getMember(editMember_id).getBoats().iterator().hasNext()) a_view.showErrorMessage("WARNING: Unfortunatelly this member has no registered boats to edit/delete!");
 				else {
 					a_view.showBoats(md_list.getMember(editMember_id).getBoats());
-					int b_id = selectBoat(md_list.getMember(editMember_id));
+					int b_id = selectBoat(editMember_id);
 					md_list.getMember(editMember_id).editBoat(a_view.editBoat(md_list.getMember(editMember_id).getBoat(b_id)));
 					a_view.showSuccessMessage("***** SUCCESSFUL EDITED BOAT " + b_id + " *****");		 	
 				}
@@ -153,17 +151,17 @@ public class Admin {
 		} while(i!=4);
 	}
 	
-	private int selectBoat(Member editMember){
+	private int selectBoat(int editMember_id){
 		int a_boat;
 		do {
 			a_boat = a_view.selectBoat();
-		} while (!editMember.existBoat(a_boat));
+		} while (!md_list.getMember(editMember_id).existBoat(a_boat));
 		return a_boat;
 	}
 	
-	private MemberList searchMembers(){
+	private MemberRegistry searchMembers(){
 		i = a_view.selectSearch();
-		MemberList search_list = new MemberList();
+		MemberRegistry search_list = new MemberRegistry();
 		
 				switch (i){
 				case 1: {		//by name

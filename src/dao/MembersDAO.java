@@ -7,17 +7,17 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import model.MemberList;
+import model.MemberRegistry;
 
 public class MembersDAO {
 	
 	private static final String File = "./resources/members.xml";
 	
-    public static MemberList jaxbXMLToObject() {
+    public static MemberRegistry jaxbXMLToObject() {
         try {
-            JAXBContext context = JAXBContext.newInstance(MemberList.class);
+            JAXBContext context = JAXBContext.newInstance(MemberRegistry.class);
             Unmarshaller un = context.createUnmarshaller();
-            MemberList md_list = (MemberList) un.unmarshal(new File(File));
+            MemberRegistry md_list = (MemberRegistry) un.unmarshal(new File(File));
             return md_list;
         } catch (JAXBException e) {
             e.printStackTrace();
@@ -26,10 +26,10 @@ public class MembersDAO {
     }
 
 
-    public static void jaxbObjectToXML(MemberList md_list) {
+    public static void jaxbObjectToXML(MemberRegistry md_list) {
 
         try {
-            JAXBContext context = JAXBContext.newInstance(MemberList.class);
+            JAXBContext context = JAXBContext.newInstance(MemberRegistry.class);
             Marshaller m = context.createMarshaller();
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             m.marshal(md_list, new File(File));

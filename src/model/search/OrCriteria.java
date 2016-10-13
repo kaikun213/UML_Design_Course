@@ -1,7 +1,7 @@
 package model.search;
 
 
-import model.MemberList;
+import model.MemberRegistry;
 import model.Member;
 
 public class OrCriteria implements SearchCriteria{
@@ -15,9 +15,9 @@ public class OrCriteria implements SearchCriteria{
 	   }
 
 	   @Override
-	   public MemberList meetCriteria(MemberList members) {
-		  MemberList firstCriteriaItems = criteria.meetCriteria(members);
-		      MemberList otherCriteriaItems = otherCriteria.meetCriteria(members);
+	   public MemberRegistry meetCriteria(MemberRegistry members) {
+		  MemberRegistry firstCriteriaItems = criteria.meetCriteria(members);
+		      MemberRegistry otherCriteriaItems = otherCriteria.meetCriteria(members);
 
 		      for (Member m : otherCriteriaItems.getMemberList()) {
 		         if(!firstCriteriaItems.containsMember(m.getId())){

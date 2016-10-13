@@ -1,6 +1,6 @@
 package model.search;
 
-import model.MemberList;
+import model.MemberRegistry;
 import model.Member;
 
 public class ByNamePrefixCriteria implements SearchCriteria {
@@ -12,8 +12,8 @@ public class ByNamePrefixCriteria implements SearchCriteria {
 		}
 	
 		@Override
-	   public MemberList meetCriteria(MemberList members) {
-	      MemberList filter_result = new MemberList(); 
+	   public MemberRegistry meetCriteria(MemberRegistry members) {
+	      MemberRegistry filter_result = new MemberRegistry(); 
 	      
 	      for (Member m : members.getMemberList()) {
 	    	  if (m.getName().startsWith(namePrefix)){

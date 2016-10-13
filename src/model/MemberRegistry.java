@@ -6,12 +6,12 @@ import javax.xml.bind.annotation.*;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MemberList {
+public class MemberRegistry {
 	
 	@XmlElement(name="member")
 	ArrayList<Member> memberList;
 
-	public MemberList(){						// constructor
+	public MemberRegistry(){						// constructor
 		memberList = new ArrayList<Member>();
 	}
 	

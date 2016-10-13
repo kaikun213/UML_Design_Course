@@ -2,7 +2,7 @@ package model.search;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import model.MemberList;
+import model.MemberRegistry;
 
 import model.Member;
 
@@ -15,8 +15,8 @@ public class ByMinimumAgeCriteria implements SearchCriteria{
 	}
 
 	@Override
-   public MemberList meetCriteria(MemberList members) {
-      MemberList filter_result = new MemberList(); 
+   public MemberRegistry meetCriteria(MemberRegistry members) {
+      MemberRegistry filter_result = new MemberRegistry(); 
       LocalDate today = LocalDate.now();
       
       for (Member m : members.getMemberList()) {

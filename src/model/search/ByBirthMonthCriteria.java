@@ -1,7 +1,7 @@
 package model.search;
 
 import model.Member;
-import model.MemberList;
+import model.MemberRegistry;
 
 public class ByBirthMonthCriteria implements SearchCriteria{
 	
@@ -12,8 +12,8 @@ public class ByBirthMonthCriteria implements SearchCriteria{
 	}
 
 	@Override
-	public MemberList meetCriteria(MemberList members) {
-		MemberList filter_result = new MemberList(); 
+	public MemberRegistry meetCriteria(MemberRegistry members) {
+		MemberRegistry filter_result = new MemberRegistry(); 
 	      
 	      for (Member m : members.getMemberList()) {
 	    	  if (Integer.parseInt(m.getPersonal_number().substring(2, 4)) == month){

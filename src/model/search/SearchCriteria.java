@@ -1,8 +1,8 @@
 package model.search;
 
-import model.MemberList;
+import model.MemberRegistry;
 
 /* Filter design pattern */
 public interface SearchCriteria {
-	   public MemberList meetCriteria(MemberList members);
+	   public MemberRegistry meetCriteria(MemberRegistry members);
 }
