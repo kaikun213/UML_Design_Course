@@ -25,8 +25,9 @@ public class MemberRegistry {
 		memberList.add(md);
 	}
 	
-	public void deleteMember(int member_id){
-		if (!memberList.remove(getMember(member_id))) System.err.println("Member not found!");; 
+	public boolean deleteMember(int member_id){
+		if (!memberList.remove(getMember(member_id))) return false;
+		return true;
 	}
 	
 	public void editMember(Member md){			// replace member with same unique id

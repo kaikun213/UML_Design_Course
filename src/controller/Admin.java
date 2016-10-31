@@ -88,8 +88,9 @@ public class Admin {
 	
 	private void deleteMember(int member_id){
 		if (a_view.deleteMemberConfirmation(member_id)) {
-			md_list.deleteMember(member_id);
-			a_view.showSuccessMessage("SUCCESSFUL DELETED MEMBER ");
+			if (md_list.deleteMember(member_id)) a_view.showSuccessMessage("SUCCESSFUL DELETED MEMBER "+ member_id);
+			else a_view.showErrorMessage("ERROR: There is no such member");
+
 		}
 	}
 	
@@ -134,8 +135,8 @@ public class Admin {
 					a_view.showBoats(md_list.getMember(editMember_id).getBoats());
 					int b_id = selectBoat(editMember_id);
 					if (a_view.deleteBoatConfirmation(b_id)) {
-						md_list.getMember(editMember_id).deleteBoat(b_id);
-						a_view.showSuccessMessage("SUCCESSFUL DELETED BOAT " + b_id);
+						if (md_list.getMember(editMember_id).deleteBoat(b_id)) a_view.showSuccessMessage("SUCCESSFUL DELETED BOAT " + b_id);
+						else a_view.showErrorMessage("ERROR: Member does not own such a boat " + b_id);
 					}
 				}
 			}

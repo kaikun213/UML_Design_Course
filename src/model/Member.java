@@ -48,8 +48,9 @@ public class Member {
 			boats.set(getIndexOfBoat(b.getId()), b);
 		}
 	}
-	public void deleteBoat(int b_id){
-		if (!boats.remove(getBoat(b_id))) System.err.println("Boat not found!");; 
+	public boolean deleteBoat(int b_id){
+		if (!boats.remove(getBoat(b_id))) return false;
+		return true;
 	}
 	
 	public Iterable<Boat> getBoats(){
