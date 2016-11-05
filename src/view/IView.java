@@ -22,9 +22,14 @@ public interface IView {
 	void showVerboseList(Iterable<Member> m_it); 	// “Verbose List”; name, personal number, member id and boats with boat information
 	void showMember(int id, String name, String personal_number, Iterable<Boat> b_it);
 	void showBoats(Iterable<Boat> b_it);			// show a list of all boats of the member
-	void showSuccessMessage(String s);
-	void showErrorMessage(String s);
 	void showAuthentification();
+	// output for debug
+	void showSuccessfulDeletedMessage();
+	void showSuccessfulCreatedMessage();
+	void showSuccessfulEditedMessage();
+	void showErrorInvalidChoice();
+	void showInvalidLogin();
+	void showSuccessfulLogin();
 
 	
 	Member createMember();							// gets unique ID from system

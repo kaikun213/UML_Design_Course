@@ -68,13 +68,29 @@ public class Console implements IView {
 		}
 	}
 	
-	public void showSuccessMessage(String s){
-		System.out.println("***** " + s + " *****");
+	// minimal code duplication could have been one method and an Error-class passed for example
+	public void showSuccessfulDeletedMessage(){
+		System.out.println("***** SUCCESSFUL DELETED *****");
+	}
+	public void showSuccessfulCreatedMessage(){
+		System.out.println("***** SUCCESSFUL CREATED *****");
+	}
+	public void showSuccessfulEditedMessage(){
+		System.out.println("***** SUCCESSFUL EDITED *****");
 	}
 	
-	public void showErrorMessage(String s){
-		System.err.println(s);
+	public void showErrorInvalidChoice(){
+		System.err.println("----- ERROR: Invalid choice -----");
 	}
+	
+	public void showInvalidLogin(){
+		System.err.println("----- ERROR: Wrong username or password -----");
+	}
+	
+	public void showSuccessfulLogin(){
+		System.out.println("***** SUCCESSFUL LOGGED IN *****");
+	}
+
 	
 	@Override
 	public void showAuthentification() {
@@ -316,6 +332,10 @@ public class Console implements IView {
 			}
 			return counter;
 		}
+	}
+	
+	private void showErrorMessage(String s){
+		System.err.println(s);
 	}
 	
 	private String getInput(ValidationType type){

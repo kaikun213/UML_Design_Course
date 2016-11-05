@@ -33,7 +33,7 @@ public class Admin {
 			if (i == 1) {			// create member
 				if (auth.isLogged() || login()){
 					md_list.addMember(a_view.createMember());
-					a_view.showSuccessMessage("SUCCESSFUL CREATED A NEW MEMBER");
+					a_view.showSuccessfulCreatedMessage();
 				}
 			}
 			else if (i == 2) {		// delete member
@@ -81,15 +81,15 @@ public class Admin {
 		a_view.showAuthentification();
 		String username = a_view.authentificateUsername();
 		String password = a_view.authentificatePassword();
-		if (auth.authentificate(username, password)) a_view.showSuccessMessage("SUCCESSFUL LOGGED IN");
-		else a_view.showErrorMessage("Wrong username or password");
+		if (auth.authentificate(username, password)) a_view.showSuccessfulLogin();
+		else a_view.showInvalidLogin();
 		return auth.isLogged();
 	}
 	
 	private void deleteMember(int member_id){
 		if (a_view.deleteMemberConfirmation(member_id)) {
-			if (md_list.deleteMember(member_id)) a_view.showSuccessMessage("SUCCESSFUL DELETED MEMBER "+ member_id);
-			else a_view.showErrorMessage("ERROR: There is no such member");
+			if (md_list.deleteMember(member_id)) a_view.showSuccessfulDeletedMessage();
+			else a_view.showErrorInvalidChoice();
 
 		}
 	}
@@ -127,26 +127,26 @@ public class Admin {
 			i = a_view.selectBoatsEdit();
 			if (i == 1) {																// create boat
 					md_list.getMember(editMember_id).addBoat(a_view.createBoat());						
-					a_view.showSuccessMessage("***** SUCCESSFUL CREATED NEW BOAT *****");		 	
+					a_view.showSuccessfulCreatedMessage();	 	
 			}
 			if (i == 2 ){																// delete boat
-				if (!md_list.getMember(editMember_id).getBoats().iterator().hasNext()) a_view.showErrorMessage("WARNING: Unfortunatelly this member has no registered boats to edit/delete!");
+				if (!md_list.getMember(editMember_id).getBoats().iterator().hasNext()) a_view.showErrorInvalidChoice();
 				else {
 					a_view.showBoats(md_list.getMember(editMember_id).getBoats());
 					int b_id = selectBoat(editMember_id);
 					if (a_view.deleteBoatConfirmation(b_id)) {
-						if (md_list.getMember(editMember_id).deleteBoat(b_id)) a_view.showSuccessMessage("SUCCESSFUL DELETED BOAT " + b_id);
-						else a_view.showErrorMessage("ERROR: Member does not own such a boat " + b_id);
+						if (md_list.getMember(editMember_id).deleteBoat(b_id)) a_view.showSuccessfulDeletedMessage();
+						else a_view.showErrorInvalidChoice();
 					}
 				}
 			}
 			if (i == 3){																// edit boat
-				if (!md_list.getMember(editMember_id).getBoats().iterator().hasNext()) a_view.showErrorMessage("WARNING: Unfortunatelly this member has no registered boats to edit/delete!");
+				if (!md_list.getMember(editMember_id).getBoats().iterator().hasNext()) a_view.showErrorInvalidChoice();
 				else {
 					a_view.showBoats(md_list.getMember(editMember_id).getBoats());
 					int b_id = selectBoat(editMember_id);
 					md_list.getMember(editMember_id).editBoat(a_view.editBoat(md_list.getMember(editMember_id).getBoat(b_id)));
-					a_view.showSuccessMessage("***** SUCCESSFUL EDITED BOAT " + b_id + " *****");		 	
+					a_view.showSuccessfulEditedMessage();	 	
 				}
 			}
 		} while(i!=4);
